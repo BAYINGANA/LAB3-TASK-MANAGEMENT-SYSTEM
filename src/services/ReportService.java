@@ -20,10 +20,13 @@ public class ReportService {
             System.out.println("No tasks found.");
             return;
         }
-        long completed = tasks.stream().filter(t -> t.getTaskStatus() == TaskStatus.COMPLETED).count();
+        double completed = tasks.stream().filter(t -> t.getTaskStatus() == TaskStatus.COMPLETED).count();
+        double total = tasks.size();
+        double percent = (completed / total) * 100;
         System.out.println("Task Completion Summary:");
         System.out.println("Total tasks: " + tasks.size());
         System.out.println("Completed: " + completed);
+        System.out.println("Percentage:" + percent);
     }
 
     public void userWorkloadSummary(List<UserCatalog> users, List<TaskCatalog> tasks) {
@@ -36,5 +39,6 @@ public class ReportService {
             double count = tasks.stream().filter(task -> task.getAssignedUserId() == user.getId()).count();
             System.out.println("User " + user.getName() + " has " + count + " assigned tasks.");
         }
+
     }
 }

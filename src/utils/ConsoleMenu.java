@@ -9,50 +9,56 @@ import services.UserService;
 import java.util.Scanner;
 
 public class ConsoleMenu {
-    Scanner scanner =new Scanner(System.in);
-    int choice = scanner.nextInt();
+    private  static Scanner scanner =new Scanner(System.in);
+    int choice ;
     private final UserService userService = new UserService();
     private final ProjectService projectService = new ProjectService();
     private final TaskService taskService = new TaskService();
     private  final ReportService reportService = new ReportService();
+    private  int userId;
 
     public void MainMenu(){
-        System.out.println("******************");
-        System.out.println("* DASHBOARD MENU *");
-        System.out.println("******************");
-        System.out.println("1. User Management");
-        System.out.println("2. Project Management");
-        System.out.println("3. Task Management");
-        System.out.println("4. Reports");
-        System.out.println("5.Exit System");
-        System.out.println("\n Enter choice: " );
+        boolean running = true;
+        while (running) {
+            System.out.println("******************");
+            System.out.println("* DASHBOARD MENU *");
+            System.out.println("******************");
+            System.out.println("1. User Management");
+            System.out.println("2. Project Management");
+            System.out.println("3. Task Management");
+            System.out.println("4. Reports");
+            System.out.println("5.Exit System");
+            System.out.println("\n Enter choice: ");
 
-        choice = scanner.nextInt();
+            choice = scanner.nextInt();
+            scanner.nextLine();
 
-        if(choice != 0 ){
-            switch (choice){
-                case 1:
-                    System.out.println(" User management");
-                    UserMenu();
-                    break;
-                case 2:
-                    System.out.println("Project management");
-                    ProjectMenu();
-                    break;
-                case 3:
-                    System.out.println("TAsk Management");
-                    TaskMenu();
-                    break;
-                case 4:
-                    System.out.println("Report management");
-                    ReportsMenu();
-                    break;
-                case 5:
-                    System.out.println("Exiting...");
-                default:
-                    System.out.println("please enter a valid choice");
+            if (choice != 0) {
+                switch (choice) {
+                    case 1:
+                        System.out.println(" User management");
+                        UserMenu();
+                        break;
+                    case 2:
+                        System.out.println("Project management");
+                        ProjectMenu();
+                        break;
+                    case 3:
+                        System.out.println("TAsk Management");
+                        TaskMenu();
+                        break;
+                    case 4:
+                        System.out.println("Report management");
+                        ReportsMenu();
+                        break;
+                    case 5:
+                        System.out.println("Exiting...");
+                        running = false;
+                    default:
+                        System.out.println("please enter a valid choice");
+                }
+
             }
-
         }
     }
 
@@ -76,30 +82,34 @@ public class ConsoleMenu {
             switch (choice){
                 case 1:
                     System.out.println(" User creation ");
-
+                    userService.createUser();
                     break;
                 case 2:
                     System.out.println("Users display");
-//                    displayAllUsers();
+                    userService.getAllUsers();
                     break;
                 case 3:
                     System.out.println("User display");
-//                    displayUser();
+                    System.out.println("Enter user id to display:");
+                    userId = scanner.nextInt();
+                    scanner.nextLine();
+                    userService.findUserById(userId);
                     break;
                 case 4:
                     System.out.println("Status");
-//                    userActivation();
+                    userService.userActivation();
+                    break;
                 case 5:
                     System.out.println("update");
-//                    updateUser();
+                    userService.updateUser();
                     break;
                 case 6:
                     System.out.println("Delete");
-//                    deleteUser();
+                    userService.deleteUser();
                     break;
                 case 7:
                     System.out.println("Search");
-//                    searchUser();
+                    userService.searchUser();
                     break;
                 case 8:
                     System.out.println("Return pending...");
@@ -148,10 +158,13 @@ public class ConsoleMenu {
                     System.out.println("Delete");
                     projectService.deleteProject();
                     break;
-//                case 6:
-//                    System.out.println("Search");
-//                    projectService.findProjectById();
-//                    break;
+                case 6:
+                    System.out.println("Search");
+                    System.out.println("Enter project id to search:");
+                    int id = scanner.nextInt();
+                    scanner.nextLine();
+                    projectService.findProjectById(id);
+                    break;
                 case 7:
                     System.out.println("Return");
                     new ConsoleMenu();
@@ -292,8 +305,7 @@ public class ConsoleMenu {
         System.out.println("1. Project Completion Summary");
         System.out.println("2. Task Completion Summary");
         System.out.println("3. User Workload Summary");
-        System.out.println("4. project completion percentage");
-        System.out.println("5. Return To Main Menu");
+        System.out.println("4. Return To Main Menu");
         System.out.println("\n Enter choice: " );
 
         choice = scanner.nextInt();
@@ -308,7 +320,7 @@ public class ConsoleMenu {
                     reportService.taskCompletionSummary(taskService.getAllTasks());
                     break;
                 case 3:
-                    System.out.println("Status pending...");
+                    reportService.userWorkloadSummary(userService.getAllUsers(), taskService.getAllTasks());
                     break;
                 case 4:
                     System.out.println("Returning");

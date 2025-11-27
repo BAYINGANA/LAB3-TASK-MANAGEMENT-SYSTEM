@@ -48,9 +48,9 @@ public class TaskService {
             return;
         }
 
-        TaskCatalog task = new TaskCatalog(taskId, name, desc, TaskStatus.NOT_STARTED, 0);
+        TaskCatalog task = new TaskCatalog(taskId, name, desc, TaskStatus.NOT_STARTED, project.getProjectID());
         tasks.add(task);
-        project.setTasks(tasks);
+        project.addTask(task);
         System.out.println("Task created and assigned to project.");
     }
 
@@ -85,6 +85,13 @@ public class TaskService {
         }
         System.out.println("Enter assigned user ID:");
         task.setAssignedUserId(Integer.parseInt(scanner.nextLine()));
+
+    ProjectService projectService = new ProjectService();
+    ProjectCatalog project = projectService.findProjectById(task.getProjectID());
+        if (project != null) {
+            project.updateTask(task);
+
+        }
 
         System.out.println("Task updated.");
     }

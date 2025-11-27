@@ -1,18 +1,20 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+
+import static java.util.Locale.filter;
+import static models.TaskStatus.COMPLETED;
 
 
 public abstract class ProjectCatalog {
-    public Scanner scanner = new Scanner(System.in);
-    public int choice;
-
-    public int projectID;
-    public String projectName;
-    public String projectDescription;
-    public String projectCategory;
-    public String projectStatus;
-    public String projectDeadline;
+    protected int projectID;
+    protected String projectName;
+    protected String projectDescription;
+    protected String projectCategory;
+    protected String projectDeadline;
+    protected List<TaskCatalog> tasks = new ArrayList<>();
 
     public abstract void createProject();
     public abstract void displayAllProjects();
@@ -21,61 +23,76 @@ public abstract class ProjectCatalog {
     public abstract void filterProject();
     public abstract void deleteProject();
 
-    public abstract double getCompletionPercentage();
+    public double getCompletionPercentage(){
+        if (tasks.isEmpty()){
+            return 0;
+        }
+        double completed = tasks.stream()
+                .filter(t -> t.getTaskStatus()== TaskStatus.COMPLETED)
+                .count();
+        return (completed * 100.0) / tasks.size();
+    }
 
-    public ProjectCatalog(int projectID, String projectName, String projectDescription, String projectCategory,String projectStatus, String projectDeadline){
+    protected ProjectCatalog(int projectID, String projectName, String projectDescription, String projectCategory, String projectDeadline){
         this.projectID = projectID;
         this.projectName = projectName;
         this.projectDescription = projectDescription;
         this.projectCategory = projectCategory;
-        this.projectStatus = projectStatus;
         this.projectDeadline = projectDeadline;
     }
 
-    public void ProjectMenu(){
-        System.out.println("**********************");
-        System.out.println("* PROJECT MANAGEMENT *");
-        System.out.println("**********************");
-        System.out.println("1. Create new project");
-        System.out.println("2. Display projects");
-        System.out.println("3. Display project Details");
-        System.out.println("4. Update project Details");
-        System.out.println("5. Filter Projects");
-        System.out.println("6. Delete Project");
-        System.out.println("7. Return To Main Menu");
-        System.out.println("\n Enter choice: ");
-
-        choice = scanner.nextInt();
-
-        if(choice != 0 ){
-            switch (choice){
-                case 1:
-                    System.out.println(" project creation pending...");
-                    break;
-                case 2:
-                    System.out.println("project list display pending...");
-                    break;
-                case 3:
-                    System.out.println("project details pending...");
-                    break;
-                case 4:
-                    System.out.println("update pending...");
-                    break;
-                case 5:
-                    System.out.println("Delete Project pending...");
-                    break;
-                case 6:
-                    System.out.println("Filter pending...");
-                    break;
-                case 7:
-                    System.out.println("Return pending...");
-                    break;
-                default:
-                    System.out.println("please enter a valid choice");
-            }
-
-        }
+    public int getProjectID() {
+        return projectID;
     }
 
+    public String getProjectName() {
+        return projectName;
+    }
 
+    public List<TaskCatalog> getTasks() {
+        return tasks;
+    }
+
+    public void setProjectID(int projectID) {
+        this.projectID = projectID;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public void setProjectDescription(String projectDescription) {
+        this.projectDescription = projectDescription;
+    }
+
+    public void setProjectCategory(String projectCategory) {
+        this.projectCategory = projectCategory;
+    }
+
+    public void setProjectDeadline(String projectDeadline) {
+        this.projectDeadline = projectDeadline;
+    }
+
+    public void addTask(TaskCatalog task) {
+        tasks.add(task);
+    }
+
+    /**
+     * Update an existing task in this project. If task with same ID exists, replace it.
+     */
+    public void updateTask(TaskCatalog task) {
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).getTaskId() == task.getTaskId()) {
+                tasks.set(i, task);
+                return;
+            }
+        }
+        // If not found, add the task
+        tasks.add(task);
+    }
+
+    @Override
+    public String toString(){
+        return "User{id=" + projectID + ", name='" +projectName + "}";
+     }
 }

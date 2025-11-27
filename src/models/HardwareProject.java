@@ -1,15 +1,25 @@
 package models;
 
-public class HardwareProject extends ProjectCatalog {
+import java.util.Scanner;
 
-    public HardwareProject(int projectID, String projectName, String projectDescription, String projectCategory, String projectStatus, String projectDeadline) {
-        super(projectID, projectName, projectDescription, projectCategory, projectStatus, projectDeadline);
+public class HardwareProject extends ProjectCatalog {
+    Scanner scanner = new Scanner(System.in);
+    public HardwareProject(int projectID, String projectName, String projectDescription, String projectDeadline, String deadline) {
+        super(projectID, projectName, projectDescription, "Hardware", projectDeadline);
 
     }
 
     @Override
     public void createProject() {
-
+        System.out.println("Enter project ID:");
+        this.projectID = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("Enter project name:");
+        this.projectName = scanner.nextLine();
+        System.out.println("Enter project description:");
+        this.projectDescription = scanner.nextLine();
+        System.out.println("Enter project deadline:");
+        this.projectDeadline = scanner.nextLine();
     }
 
     @Override
@@ -39,6 +49,6 @@ public class HardwareProject extends ProjectCatalog {
 
     @Override
     public double getCompletionPercentage() {
-        return 0;
+    return super.getCompletionPercentage();
     }
 }

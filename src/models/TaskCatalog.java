@@ -2,16 +2,78 @@ package models;
 
 import java.util.Scanner;
 
-public class TaskCatalog implements Completion {
+public class TaskCatalog {
     public Scanner scanner = new Scanner(System.in);
     public int choice ;
 
-    public int taskId;
-    public String taskName;
-    public String taskDescription;
-    public String taskStatus;
-    public String taskPriority;
-    public int assignedUserId;
+    private int taskId;
+    private String taskName;
+    private String taskDescription;
+    private TaskStatus taskStatus;
+    private int assignedUserId;
+    private int projectID;
+
+    public TaskCatalog(int taskId, String taskName, String taskDescription, TaskStatus notStarted, int projectID) {
+        this.taskId = taskId;
+        this.taskName = taskName;
+        this.taskDescription = taskDescription;
+        this.taskStatus = TaskStatus.NOT_STARTED;
+        this.assignedUserId = 0;
+        this.projectID = projectID;
+    }
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public String getTaskDescription() {
+        return taskDescription;
+    }
+
+    public TaskStatus getTaskStatus() {
+        return taskStatus;
+    }
+
+    public void setTaskStatus(TaskStatus taskStatus) {
+        this.taskStatus = taskStatus;
+    }
+
+    public int getAssignedUserId() {
+        return assignedUserId;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public void setTaskDescription(String taskDescription) {
+        this.taskDescription = taskDescription;
+    }
+
+    public void setProjectID(int projectID) {
+        this.projectID = projectID;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
+    }
+
+    public void setAssignedUserId(int assignedUserId) {
+        this.assignedUserId = assignedUserId;
+    }
+    public int getProjectID(){
+        return projectID;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{id=" + taskId + ", name='" + taskName + "', status=" + taskStatus +
+                ", assignedUserId=" + assignedUserId + ", projectId=" + projectID + "}";
+    }
 
     public void createTask(){
         System.out.println("Enter task ID: ");
@@ -20,10 +82,6 @@ public class TaskCatalog implements Completion {
         taskName = scanner.nextLine();
         System.out.println("Enter the task description:");
         taskDescription = scanner.nextLine();
-        System.out.println("Enter the current task status:");
-        taskStatus = scanner.nextLine();
-        System.out.println("Enter the task priority:");
-        taskPriority = scanner.nextLine();
         System.out.println("Eter assigned user ID:");
         assignedUserId = scanner.nextInt();
     }
@@ -52,14 +110,6 @@ public class TaskCatalog implements Completion {
         newTaskDescription = scanner.nextLine();
         taskDescription = newTaskDescription;
 
-        System.out.println("Enter the current task status:");
-        newTaskStatus = scanner.nextLine();
-        taskStatus = newTaskStatus;
-
-        System.out.println("Enter the task priority:");
-        newTaskPriority = scanner.nextLine();
-        taskPriority = newTaskPriority;
-
         System.out.println("Eter assigned user ID:");
         newAssignedUserId = scanner.nextInt();
         assignedUserId = newAssignedUserId;
@@ -73,83 +123,4 @@ public class TaskCatalog implements Completion {
 
     }
 
-    @Override
-    public void markCompleted() {
-
-    }
-
-    @Override
-    public boolean isCompleted() {
-        return false;
-    }
-
-    @Override
-    public void markInProgress() {
-
-    }
-
-    @Override
-    public boolean isInProgress() {
-        return false;
-    }
-
-    @Override
-    public void markNotStarted() {
-
-    }
-
-    @Override
-    public boolean isNotStarted() {
-        return false;
-    }
-
-    @Override
-    public void getCompletionStatus() {
-
-    }
-
-    @Override
-    public void getTaskByStatus() {
-
-    }
-
-    public void TaskMenu(){
-        System.out.println("*******************");
-        System.out.println("* TASK MANAGEMENT *");
-        System.out.println("*******************");
-        System.out.println("1. Create new task");
-        System.out.println("2. Display project tasks");
-        System.out.println("3. Update task");
-        System.out.println("4. Delete task");
-        System.out.println("5. Return To Main Menu");
-        System.out.println("\n Enter choice: " );
-
-        choice = scanner.nextInt();
-
-        if(choice != 0 ){
-            switch (choice){
-                case 1:
-                    System.out.println(" Task creation pending...");
-                    break;
-                case 2:
-                    System.out.println("Task list display pending...");
-                    break;
-                case 3:
-                    System.out.println("Project tasks pending...");
-                    break;
-                case 4:
-                    System.out.println("update pending...");
-                    break;
-                case 5:
-                    System.out.println("Delete pending...");
-                    break;
-                case 6:
-                    System.out.println("Return pending...");
-                    break;
-                default:
-                    System.out.println("please enter a valid choice");
-            }
-
-        }
-    }
 }
