@@ -9,7 +9,6 @@ public abstract class UserCatalog {
     protected String name;
     protected String email;
     protected UserStatus status;
-//    protected List<UserCatalog> users = new ArrayList<>();
 
     public UserCatalog(int id, String name, UserStatus status, String email) {
         this.id = id;
@@ -51,3 +50,4 @@ public abstract class UserCatalog {
         return String.format("User[Id=%d, Name=%s, Email=%s, Status=%s]",id, name, email, status);
     }
 }
+

@@ -8,3 +8,4 @@ public class adminUser extends UserCatalog {
         super(id, name, UserStatus.ACTIVE, email);
     }
 }
+

@@ -36,7 +36,6 @@ public class TaskService {
         String name = scanner.nextLine();
         System.out.println("Enter task description:");
         String desc = scanner.nextLine();
-
         System.out.println("Available projects:");
         projectService.displayProjects();
 
@@ -47,8 +46,19 @@ public class TaskService {
             System.out.println("Project not found, aborting.");
             return;
         }
+       
+        UserService userService = new UserService();
+        System.out.println("Available users:");
+        for (models.UserCatalog u : userService.getAllUsers()) {
+            System.out.println(u);
+        }
+        System.out.println("Enter user ID to assign this task (or 0 for unassigned):");
+        int assignedUserId = Integer.parseInt(scanner.nextLine());
 
         TaskCatalog task = new TaskCatalog(taskId, name, desc, TaskStatus.NOT_STARTED, project.getProjectID());
+        if (assignedUserId > 0) {
+            task.setAssignedUserId(assignedUserId);
+        }
         tasks.add(task);
         project.addTask(task);
         System.out.println("Task created and assigned to project.");
@@ -76,15 +86,14 @@ public class TaskService {
         task.setTaskName(scanner.nextLine());
         System.out.println("Enter new task description:");
         task.setTaskDescription(scanner.nextLine());
-        System.out.println("Enter new task status (NOT_STARTED, IN_PROGRESS, COMPLETED):");
+    System.out.println("Enter new task status (NOT_STARTED, IN_PROGRESS, COMPLETED):");
         String status = scanner.nextLine();
         try {
             task.setTaskStatus(TaskStatus.valueOf(status));
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid status input.");
         }
-        System.out.println("Enter assigned user ID:");
-        task.setAssignedUserId(Integer.parseInt(scanner.nextLine()));
+   
 
     ProjectService projectService = new ProjectService();
     ProjectCatalog project = projectService.findProjectById(task.getProjectID());
@@ -107,3 +116,4 @@ public class TaskService {
         }
     }
 }
+

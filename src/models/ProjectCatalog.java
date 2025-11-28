@@ -77,9 +77,7 @@ public abstract class ProjectCatalog {
         tasks.add(task);
     }
 
-    /**
-     * Update an existing task in this project. If task with same ID exists, replace it.
-     */
+    
     public void updateTask(TaskCatalog task) {
         for (int i = 0; i < tasks.size(); i++) {
             if (tasks.get(i).getTaskId() == task.getTaskId()) {
@@ -87,7 +85,7 @@ public abstract class ProjectCatalog {
                 return;
             }
         }
-        // If not found, add the task
+       
         tasks.add(task);
     }
 
@@ -96,3 +94,4 @@ public abstract class ProjectCatalog {
         return "User{id=" + projectID + ", name='" +projectName + "}";
      }
 }
+

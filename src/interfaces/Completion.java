@@ -10,3 +10,4 @@ public interface Completion {
     public void getCompletionStatus();
     public void getTaskByStatus();
 }
+

@@ -52,3 +52,4 @@ public class SoftwareProject extends ProjectCatalog {
     return super.getCompletionPercentage();
     }
 }
+

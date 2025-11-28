@@ -9,3 +9,4 @@ public class regularUser extends UserCatalog {
     }
 
 }
+

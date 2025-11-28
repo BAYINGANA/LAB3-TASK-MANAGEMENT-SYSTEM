@@ -16,3 +16,4 @@ public class ReportsCatalog {
         return "Poject '" + project.getProjectName() + "' completion" + project.getCompletionPercentage();
     }
 }
+

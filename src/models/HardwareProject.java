@@ -52,3 +52,4 @@ public class HardwareProject extends ProjectCatalog {
     return super.getCompletionPercentage();
     }
 }
+

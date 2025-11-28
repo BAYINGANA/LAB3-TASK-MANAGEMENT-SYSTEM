@@ -6,6 +6,7 @@ import models.UserStatus;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import utils.ValidationUtils;
 
 public class UserService {
     private static List<UserCatalog> users = new ArrayList<>();
@@ -13,22 +14,37 @@ public class UserService {
 
     public void createUser() {
         System.out.println("Enter user ID:");
-        Scanner scanner = new Scanner(System.in);
         int id = scanner.nextInt();
         scanner.nextLine();
         System.out.println("Enter user name:");
         String name = scanner.nextLine();
-        System.out.println("Enter user email:");
-        String email = scanner.nextLine();
-        UserCatalog newUser = new UserCatalog(id, name, UserStatus.ACTIVE, email){};
+        String email;
+        while (true) {
+            System.out.println("Enter user email:");
+            email = scanner.nextLine();
+            if (ValidationUtils.isValidEmail(email)) break;
+            System.out.println("Invalid email. Please include an '@' and a domain (e.g. user@domain.com).");
+        }
+        System.out.println("Select user type (1=admin, 2=regular):");
+        int type = scanner.nextInt();
+        scanner.nextLine();
+        UserCatalog newUser;
+        if (type == 1) {
+            newUser = new models.adminUser(id, name, email);
+        } else {
+            newUser = new models.regularUser(id, name, email);
+        }
         users.add(newUser);
-        System.out.println("User created successfully!");
+        System.out.println("User created successfully! -> " + newUser);
     }
 
     public List<UserCatalog> getAllUsers(){
         System.out.println("LIST OF ALL SYSTEM USERS");
         if (users.isEmpty()){
             System.out.println("NO user found");
+        }
+        for (UserCatalog u : users) {
+            System.out.println(u);
         }
        return users;
     }
@@ -113,3 +129,4 @@ public class UserService {
     }
 
 }
+

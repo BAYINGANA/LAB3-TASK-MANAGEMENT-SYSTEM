@@ -218,85 +218,7 @@ public class ConsoleMenu {
         }
     }
 
-//    public void AssignmentMenu(){
-//        System.out.println("*************************");
-//        System.out.println("* ASSIGNMENT MANAGEMENT *");
-//        System.out.println("*************************");
-//        System.out.println("1. Assign User to Task");
-//        System.out.println("2. Display All Assignments");
-//        System.out.println("3. Display Assignments By User");
-//        System.out.println("4. Change Assignment");
-//        System.out.println("5. Remove Assignment");
-//        System.out.println("6. Return To Main Menu");
-//        System.out.println("\n Enter choice: " );
-//
-//        choice = scanner.nextInt();
-//
-//        if(choice != 0 ){
-//            switch (choice){
-//                case 1:
-//                    System.out.println(" Task assignment pending...");
-//                    break;
-//                case 2:
-//                    System.out.println("assignments display pending...");
-//                    break;
-//                case 3:
-//                    System.out.println("user assignments pending...");
-//                    break;
-//                case 4:
-//                    System.out.println("update pending...");
-//                    break;
-//                case 5:
-//                    System.out.println("Delete pending...");
-//                    break;
-//                case 6:
-//                    System.out.println(" Return pending...");
-//                    break;
-//                default:
-//                    System.out.println("please enter a valid choice");
-//            }
-//
-//        }
-//    }
 
-//    public void CompletionStatusMenu(){
-//        System.out.println("********************************");
-//        System.out.println("* Completion Status MANAGEMENT *");
-//        System.out.println("********************************");
-//        System.out.println("1. Update Task Status");
-//        System.out.println("2. Display Project Completion Status ");
-//        System.out.println("3. Filter Tasks by Status");
-//        System.out.println("4. Return to Main Menu");
-//        System.out.println("\n Enter choice: " );
-//
-//        choice = scanner.nextInt();
-//
-//        if(choice != 0 ){
-//            switch (choice){
-//                case 1:
-//                    System.out.println(" Task completion pending...");
-//                    break;
-//                case 2:
-//                    System.out.println("Task progression pending...");
-//                    break;
-//                case 3:
-//                    System.out.println("Start task pending...");
-//                    break;
-//                case 4:
-//                    System.out.println("project Status display pending...");
-//                    break;
-//                case 5:
-//                    System.out.println("filter pending...");
-//                    break;
-//                case 6:
-//                    System.out.println("Return pending...");
-//                    break;
-//                default:
-//                    System.out.println("please enter a valid choice");
-//            }
-//
-//        }
-//    }
 
     public void ReportsMenu(){
         System.out.println("**********************");
@@ -333,3 +255,4 @@ public class ConsoleMenu {
         }
     }
 }
+

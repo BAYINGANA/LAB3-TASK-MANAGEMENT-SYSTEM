@@ -76,14 +76,14 @@ public class TaskCatalog {
     }
 
     public void createTask(){
-        System.out.println("Enter task ID: ");
-        taskId = scanner.nextInt();
-        System.out.println("Enter task name:");
-        taskName = scanner.nextLine();
-        System.out.println("Enter the task description:");
-        taskDescription = scanner.nextLine();
-        System.out.println("Eter assigned user ID:");
-        assignedUserId = scanner.nextInt();
+//        System.out.println("Enter task ID: ");
+//        taskId = scanner.nextInt();
+//        System.out.println("Enter task name:");
+//        taskName = scanner.nextLine();
+//        System.out.println("Enter the task description:");
+//        taskDescription = scanner.nextLine();
+//        System.out.println("Eter assigned user ID:");
+//        assignedUserId = scanner.nextInt();
     }
 
     public void displayProjectTasks(){
@@ -124,3 +124,4 @@ public class TaskCatalog {
     }
 
 }
+
