@@ -11,6 +11,13 @@ import java.util.Scanner;
 public class ProjectService {
     private final List<ProjectCatalog> projects = new ArrayList<>();
     private final Scanner scanner = new Scanner(System.in);
+    private static int projectCounter = 0;
+
+    private static int generateProjectId() {
+        projectCounter++;
+        System.out.println("Auto-generated Project ID: PR" + String.format("%03d", projectCounter));
+        return projectCounter;
+    }
 
     public void addProject(ProjectCatalog project) {
         projects.add(project);
@@ -28,22 +35,19 @@ public class ProjectService {
     public void createProjectMenu() {
         System.out.println("Enter project type (software/hardware):");
         String type = scanner.nextLine().toLowerCase();
-        System.out.println("Enter project ID:");
-        int id = Integer.parseInt(scanner.nextLine());
+        int id = generateProjectId();
         System.out.println("Enter project name:");
         String name = scanner.nextLine();
         System.out.println("Enter project description:");
         String description = scanner.nextLine();
-        System.out.println("Enter project status:");
-        String status = scanner.nextLine();
         System.out.println("Enter project deadline:");
         String deadline = scanner.nextLine();
 
         ProjectCatalog project;
         if ("software".equals(type)) {
-            project = new SoftwareProject(id, name, description, status, deadline);
+            project = new SoftwareProject(id, name, description, deadline);
         } else if ("hardware".equals(type)) {
-            project = new HardwareProject(id, name, description, status, deadline);
+            project = new HardwareProject(id, name, description, deadline);
         } else {
             System.out.println("Invalid project type.");
             return;

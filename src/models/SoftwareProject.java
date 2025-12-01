@@ -5,8 +5,8 @@ import java.util.Scanner;
 public class SoftwareProject extends ProjectCatalog {
     Scanner scanner = new Scanner(System.in);
 
-    public SoftwareProject(int projectID, String projectName, String projectDescription, String projectDeadline, String deadline) {
-        super(projectID, projectName, projectDescription, "Software" , projectDeadline);
+    public SoftwareProject(int projectID, String projectName, String projectDescription, String projectDeadline) {
+        super(projectID, projectName, projectDescription, "Software", projectDeadline);
     }
 
     @Override

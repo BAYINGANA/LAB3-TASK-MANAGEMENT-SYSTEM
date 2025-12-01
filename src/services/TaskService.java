@@ -11,6 +11,13 @@ import java.util.Scanner;
 public class TaskService {
     private final List<TaskCatalog> tasks = new ArrayList<>();
     private final Scanner scanner = new Scanner(System.in);
+    private static int taskCounter = 0;
+
+    private static int generateTaskId() {
+        taskCounter++;
+        System.out.println("Auto-generated Task ID: TS" + String.format("%03d", taskCounter));
+        return taskCounter;
+    }
 
     public void addTask(TaskCatalog task) {
         tasks.add(task);
@@ -30,8 +37,7 @@ public class TaskService {
         return null;
     }
     public void createTaskMenu(ProjectService projectService) {
-        System.out.println("Enter task ID:");
-        int taskId = Integer.parseInt(scanner.nextLine());
+        int taskId = generateTaskId();
         System.out.println("Enter task name:");
         String name = scanner.nextLine();
         System.out.println("Enter task description:");
@@ -46,7 +52,7 @@ public class TaskService {
             System.out.println("Project not found, aborting.");
             return;
         }
-       
+        
         UserService userService = new UserService();
         System.out.println("Available users:");
         for (models.UserCatalog u : userService.getAllUsers()) {
@@ -93,7 +99,7 @@ public class TaskService {
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid status input.");
         }
-   
+    // assigned user is not requested here because TaskCatalog has a default; keep existing assignment
 
     ProjectService projectService = new ProjectService();
     ProjectCatalog project = projectService.findProjectById(task.getProjectID());
@@ -116,4 +122,3 @@ public class TaskService {
         }
     }
 }
-

@@ -53,9 +53,9 @@ public abstract class ProjectCatalog {
         return tasks;
     }
 
-    public void setProjectID(int projectID) {
-        this.projectID = projectID;
-    }
+//    public void setProjectID(int projectID) {
+//        this.projectID = projectID;
+//    }
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
@@ -65,9 +65,9 @@ public abstract class ProjectCatalog {
         this.projectDescription = projectDescription;
     }
 
-    public void setProjectCategory(String projectCategory) {
-        this.projectCategory = projectCategory;
-    }
+//    public void setProjectCategory(String projectCategory) {
+//        this.projectCategory = projectCategory;
+//    }
 
     public void setProjectDeadline(String projectDeadline) {
         this.projectDeadline = projectDeadline;
@@ -91,7 +91,7 @@ public abstract class ProjectCatalog {
 
     @Override
     public String toString(){
-        return "User{id=" + projectID + ", name='" +projectName + "}";
+        return "User{id=" + projectID + ", name='" +projectName + ", Description = " + projectDescription + ", Deadline = "+ projectDeadline + ", Category = "+ projectCategory + "}";
      }
 }
 

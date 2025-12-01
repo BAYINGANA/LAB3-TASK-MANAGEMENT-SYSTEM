@@ -11,19 +11,27 @@ import utils.ValidationUtils;
 public class UserService {
     private static List<UserCatalog> users = new ArrayList<>();
     private static Scanner scanner = new Scanner(System.in);
+    private static int userCounter = 0;
+
+    private static int generateUserId() {
+        userCounter++;
+        return userCounter;
+    }
 
     public void createUser() {
-        System.out.println("Enter user ID:");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+        int id = generateUserId();
+        System.out.println("Auto-generated User ID: UR" + String.format("%03d", id));
         System.out.println("Enter user name:");
         String name = scanner.nextLine();
         String email;
         while (true) {
             System.out.println("Enter user email:");
             email = scanner.nextLine();
-            if (ValidationUtils.isValidEmail(email)) break;
-            System.out.println("Invalid email. Please include an '@' and a domain (e.g. user@domain.com).");
+            if (ValidationUtils.isValidEmail(email)){
+                break;
+            }else {
+                System.out.println("Invalid email. Please include an '@' and a domain (e.g. user@domain.com).");
+            }
         }
         System.out.println("Select user type (1=admin, 2=regular):");
         int type = scanner.nextInt();
