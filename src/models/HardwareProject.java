@@ -11,15 +11,6 @@ public class HardwareProject extends ProjectCatalog {
 
     @Override
     public void createProject() {
-//        System.out.println("Enter project ID:");
-//        this.projectID = scanner.nextInt();
-//        scanner.nextLine();
-//        System.out.println("Enter project name:");
-//        this.projectName = scanner.nextLine();
-//        System.out.println("Enter project description:");
-//        this.projectDescription = scanner.nextLine();
-//        System.out.println("Enter project deadline:");
-//        this.projectDeadline = scanner.nextLine();
     }
 
     @Override

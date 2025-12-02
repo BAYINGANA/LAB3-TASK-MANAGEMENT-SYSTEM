@@ -1,5 +1,7 @@
 package utils;
 
+import utils.exceptions.InvalidInputException;
+
 public class ValidationUtils {
 
 	public static boolean isNonEmpty(String s) {
@@ -21,6 +23,15 @@ public class ValidationUtils {
 		if (!domain.contains(".")) return false;
 		return true;
 	}
+
+    public static void isValidName(String name) throws InvalidInputException {
+        if (name.matches(".*\\d.*")){
+            throw new InvalidInputException("Name CANNOT contain numbers");
+        }
+        if(name.isEmpty() || name == null){
+            throw new InvalidInputException("Name CANNOT be empty");
+        }
+    }
 
 }
 

@@ -3,6 +3,9 @@ package services;
 import models.HardwareProject;
 import models.ProjectCatalog;
 import models.SoftwareProject;
+import utils.ValidationUtils;
+import utils.exceptions.EmptyProjectException;
+import utils.exceptions.InvalidInputException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +41,11 @@ public class ProjectService {
         int id = generateProjectId();
         System.out.println("Enter project name:");
         String name = scanner.nextLine();
+        try {
+            ValidationUtils.isValidName(name);
+        }catch (InvalidInputException e){
+            System.out.println(e.getMessage());
+        }
         System.out.println("Enter project description:");
         String description = scanner.nextLine();
         System.out.println("Enter project deadline:");
@@ -55,10 +63,9 @@ public class ProjectService {
         addProject(project);
     }
 
-    public void displayProjects() {
+    public void displayProjects() throws EmptyProjectException {
         if (projects.isEmpty()) {
-            System.out.println("No projects available.");
-            return;
+            throw new EmptyProjectException("No projects found");
         }
         for (ProjectCatalog project : projects) {
             System.out.println(project);

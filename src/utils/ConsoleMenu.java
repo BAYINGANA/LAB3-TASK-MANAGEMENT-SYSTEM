@@ -5,6 +5,8 @@ import services.ProjectService;
 import services.ReportService;
 import services.TaskService;
 import services.UserService;
+import utils.exceptions.EmptyProjectException;
+import utils.exceptions.TaskNotFoundException;
 
 import java.util.Scanner;
 
@@ -144,7 +146,12 @@ public class ConsoleMenu {
                     break;
                 case 2:
                     System.out.println("project list display");
-                    projectService.displayProjects();
+                    try {
+                        projectService.displayProjects();
+                    } catch (Exception t){
+                        System.out.println(t.getMessage());
+                    }
+
                     break;
                 case 3:
                     System.out.println("project details");
@@ -197,15 +204,27 @@ public class ConsoleMenu {
                     break;
                 case 2:
                     System.out.println("Task list display");
-                    taskService.displayTasks();
+                    try {
+                        taskService.displayTasks();
+                    }catch (EmptyProjectException e){
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 3:
                     System.out.println("Task update ");
-                    taskService.updateTaskMenu();
+                    try {
+                        taskService.updateTaskMenu();
+                    }catch (TaskNotFoundException e){
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 4:
                     System.out.println("Delete pending");
-                    taskService.deleteTask();
+                    try {
+                        taskService.deleteTask();
+                    }catch (TaskNotFoundException e){
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 6:
                     System.out.println("Return ");

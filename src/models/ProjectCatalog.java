@@ -2,10 +2,6 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-
-import static java.util.Locale.filter;
-import static models.TaskStatus.COMPLETED;
 
 
 public abstract class ProjectCatalog {
@@ -65,9 +61,6 @@ public abstract class ProjectCatalog {
         this.projectDescription = projectDescription;
     }
 
-//    public void setProjectCategory(String projectCategory) {
-//        this.projectCategory = projectCategory;
-//    }
 
     public void setProjectDeadline(String projectDeadline) {
         this.projectDeadline = projectDeadline;

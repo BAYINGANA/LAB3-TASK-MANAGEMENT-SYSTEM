@@ -3,6 +3,8 @@ package services;
 import models.ProjectCatalog;
 import models.TaskCatalog;
 import models.TaskStatus;
+import utils.exceptions.EmptyProjectException;
+import utils.exceptions.TaskNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +30,13 @@ public class TaskService {
         return tasks;
     }
 
-    public TaskCatalog findTaskById(int id) {
+    public TaskCatalog findTaskById(int id) throws TaskNotFoundException {
         for (TaskCatalog task : tasks) {
             if (task.getTaskId() == id) {
                 return task;
             }
         }
-        return null;
+        throw new TaskNotFoundException("TASK NOT FOUND!!");
     }
     public void createTaskMenu(ProjectService projectService) {
         int taskId = generateTaskId();
@@ -43,8 +45,11 @@ public class TaskService {
         System.out.println("Enter task description:");
         String desc = scanner.nextLine();
         System.out.println("Available projects:");
-        projectService.displayProjects();
-
+        try {
+            projectService.displayProjects();
+        }catch (EmptyProjectException e){
+            System.out.println(e.getMessage());
+        }
         System.out.println("Enter project ID to assign this task:");
         int projectId = Integer.parseInt(scanner.nextLine());
         ProjectCatalog project = projectService.findProjectById(projectId);
@@ -70,23 +75,21 @@ public class TaskService {
         System.out.println("Task created and assigned to project.");
     }
 
-    public void displayTasks() {
+    public void displayTasks() throws EmptyProjectException{
         if (tasks.isEmpty()) {
-            System.out.println("No tasks available.");
-            return;
+            throw new EmptyProjectException("No tasks available.");
         }
         for (TaskCatalog task : tasks) {
             System.out.println(task);
         }
     }
 
-    public void updateTaskMenu() {
+    public void updateTaskMenu() throws TaskNotFoundException{
         System.out.println("Enter task ID to update:");
         int id = Integer.parseInt(scanner.nextLine());
         TaskCatalog task = findTaskById(id);
         if (task == null) {
-            System.out.println("Task not found.");
-            return;
+            throw new TaskNotFoundException("Task not found.");
         }
         System.out.println("Enter new task name:");
         task.setTaskName(scanner.nextLine());
@@ -111,14 +114,14 @@ public class TaskService {
         System.out.println("Task updated.");
     }
 
-    public void deleteTask() {
+    public void deleteTask() throws TaskNotFoundException {
         System.out.println("Enter task ID to delete:");
         int id = Integer.parseInt(scanner.nextLine());
         TaskCatalog task = findTaskById(id);
         if (task != null && tasks.remove(task)) {
             System.out.println("Task deleted.");
         } else {
-            System.out.println("Task not found.");
+            throw new TaskNotFoundException("Task not found.");
         }
     }
 }
