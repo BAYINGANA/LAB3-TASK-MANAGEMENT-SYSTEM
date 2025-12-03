@@ -35,7 +35,7 @@ public class ProjectService {
         return projects.stream().filter(p -> p.getProjectID() == id).findFirst().orElse(null);
     }
 
-    public void createProjectMenu() {
+    public void createProject() {
         System.out.println("Enter project type (software/hardware):");
         String type = scanner.nextLine().toLowerCase();
         int id = generateProjectId();

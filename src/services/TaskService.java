@@ -102,7 +102,6 @@ public class TaskService {
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid status input.");
         }
-    // assigned user is not requested here because TaskCatalog has a default; keep existing assignment
 
     ProjectService projectService = new ProjectService();
     ProjectCatalog project = projectService.findProjectById(task.getProjectID());

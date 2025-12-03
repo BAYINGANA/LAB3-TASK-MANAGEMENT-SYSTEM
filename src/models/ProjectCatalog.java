@@ -12,23 +12,6 @@ public abstract class ProjectCatalog {
     protected String projectDeadline;
     protected List<TaskCatalog> tasks = new ArrayList<>();
 
-    public abstract void createProject();
-    public abstract void displayAllProjects();
-    public abstract void displayProject();
-    public abstract void updateProject();
-    public abstract void filterProject();
-    public abstract void deleteProject();
-
-    public double getCompletionPercentage(){
-        if (tasks.isEmpty()){
-            return 0;
-        }
-        double completed = tasks.stream()
-                .filter(t -> t.getTaskStatus()== TaskStatus.COMPLETED)
-                .count();
-        return (completed * 100.0) / tasks.size();
-    }
-
     protected ProjectCatalog(int projectID, String projectName, String projectDescription, String projectCategory, String projectDeadline){
         this.projectID = projectID;
         this.projectName = projectName;
@@ -44,14 +27,6 @@ public abstract class ProjectCatalog {
     public String getProjectName() {
         return projectName;
     }
-
-    public List<TaskCatalog> getTasks() {
-        return tasks;
-    }
-
-//    public void setProjectID(int projectID) {
-//        this.projectID = projectID;
-//    }
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
@@ -78,7 +53,6 @@ public abstract class ProjectCatalog {
                 return;
             }
         }
-       
         tasks.add(task);
     }
 
