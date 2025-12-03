@@ -1,9 +1,13 @@
 package services;
 
 import models.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReportService {
+    protected List<TaskCatalog> tasks = new ArrayList<>();
+
     public void projectCompletionSummary(List<ProjectCatalog> projects) {
         if (projects.isEmpty()) {
             System.out.println("No projects found.");
@@ -11,8 +15,17 @@ public class ReportService {
         }
         System.out.println("Project Completion Summary:");
         for (ProjectCatalog project : projects) {
-            System.out.println("Project " + project.getProjectName() + ": " + project.getCompletionPercentage() + "% complete.");
+            System.out.println("Project " + project.getProjectName() + ": " + getCompletionPercentage() + "% complete.");
         }
+    }
+    public double getCompletionPercentage(){
+        if (tasks.isEmpty()){
+            return 0;
+        }
+        double completed = tasks.stream()
+                .filter(t -> t.getTaskStatus()== TaskStatus.COMPLETED)
+                .count();
+        return (completed * 100.0) / tasks.size();
     }
 
     public void taskCompletionSummary(List<TaskCatalog> tasks) {

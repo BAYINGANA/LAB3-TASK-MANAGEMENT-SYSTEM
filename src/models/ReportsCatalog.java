@@ -1,5 +1,7 @@
 package models;
 
+import services.ReportService;
+
 import java.util.Scanner;
 
 public class ReportsCatalog {
@@ -7,13 +9,14 @@ public class ReportsCatalog {
     public int choice ;
 
     private ProjectCatalog project;
+    private ReportService service;
 
     public ReportsCatalog(ProjectCatalog project){
         this.project = project;
     }
 
     public String summary() {
-        return "Poject '" + project.getProjectName() + "' completion" + project.getCompletionPercentage();
+        return "Project '" + project.getProjectName() + "' completion" + service.getCompletionPercentage();
     }
 }
 

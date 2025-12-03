@@ -1,6 +1,5 @@
 package utils;
 
-import models.ProjectCatalog;
 import services.ProjectService;
 import services.ReportService;
 import services.TaskService;
@@ -11,13 +10,12 @@ import utils.exceptions.TaskNotFoundException;
 import java.util.Scanner;
 
 public class ConsoleMenu {
-    private  static Scanner scanner =new Scanner(System.in);
+    private  static final Scanner scanner =new Scanner(System.in);
     int choice ;
     private final UserService userService = new UserService();
     private final ProjectService projectService = new ProjectService();
     private final TaskService taskService = new TaskService();
     private  final ReportService reportService = new ReportService();
-    private  int userId;
 
     public void MainMenu(){
         boolean running = true;
@@ -65,6 +63,8 @@ public class ConsoleMenu {
     }
 
     public void UserMenu(){
+        int userId;
+
         System.out.println("*******************");
         System.out.println("* USER MANAGEMENT *");
         System.out.println("*******************");
@@ -142,7 +142,7 @@ public class ConsoleMenu {
             switch (choice){
                 case 1:
                     System.out.println(" project creation ");
-                    projectService.createProjectMenu();
+                    projectService.createProject();
                     break;
                 case 2:
                     System.out.println("project list display");
