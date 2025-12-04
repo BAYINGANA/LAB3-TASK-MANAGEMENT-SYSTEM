@@ -1,5 +1,6 @@
 package utils;
 
+import models.TaskCatalog;
 import services.ProjectService;
 import services.ReportService;
 import services.TaskService;
@@ -54,6 +55,7 @@ public class ConsoleMenu {
                     case 5:
                         System.out.println("Exiting...");
                         running = false;
+                        break;
                     default:
                         System.out.println("please enter a valid choice");
                 }
@@ -63,213 +65,291 @@ public class ConsoleMenu {
     }
 
     public void UserMenu(){
+        boolean running = true;
         int userId;
 
-        System.out.println("*******************");
-        System.out.println("* USER MANAGEMENT *");
-        System.out.println("*******************");
-        System.out.println("1. Create new user");
-        System.out.println("2. View All Users");
-        System.out.println("3. View User Details");
-        System.out.println("4. Activate and Deactivate User");
-        System.out.println("5. Update User Information");
-        System.out.println("6. Delete User");
-        System.out.println("7. Search User");
-        System.out.println("8. Return to Main Menu");
-        System.out.println("\n Enter choice: " );
+        while(running) {
+            System.out.println("*******************");
+            System.out.println("* USER MANAGEMENT *");
+            System.out.println("*******************");
+            System.out.println("1. Create new user");
+            System.out.println("2. View All Users");
+            System.out.println("3. View User Details");
+            System.out.println("4. Activate and Deactivate User");
+            System.out.println("5. Update User Information");
+            System.out.println("6. Delete User");
+            System.out.println("7. Search User");
+            System.out.println("8. Return to Main Menu");
+            System.out.println("9. Exit system");
+            System.out.println("\n Enter choice: ");
 
-        choice = scanner.nextInt();
+            choice = scanner.nextInt();
 
-        if(choice != 0 ){
-            switch (choice){
-                case 1:
-                    System.out.println(" User creation ");
-                    userService.createUser();
-                    break;
-                case 2:
-                    System.out.println("Users display");
-                    userService.getAllUsers();
-                    break;
-                case 3:
-                    System.out.println("User display");
-                    System.out.println("Enter user id to display:");
-                    userId = scanner.nextInt();
-                    scanner.nextLine();
-                    userService.findUserById(userId);
-                    break;
-                case 4:
-                    System.out.println("Status");
-                    userService.userActivation();
-                    break;
-                case 5:
-                    System.out.println("update");
-                    userService.updateUser();
-                    break;
-                case 6:
-                    System.out.println("Delete");
-                    userService.deleteUser();
-                    break;
-                case 7:
-                    System.out.println("Search");
-                    userService.searchUser();
-                    break;
-                case 8:
-                    System.out.println("Return pending...");
-                    break;
-                default:
-                    System.out.println("please enter a valid choice");
+            if (choice != 0) {
+                switch (choice) {
+                    case 1:
+                        System.out.println(" User creation ");
+                        userService.createUser();
+                        break;
+                    case 2:
+                        System.out.println("Users display");
+                        userService.getAllUsers();
+                        break;
+                    case 3:
+                        System.out.println("User display");
+                        System.out.println("Enter user id to display:");
+                        userId = scanner.nextInt();
+                        scanner.nextLine();
+                        userService.findUserById(userId);
+                        break;
+                    case 4:
+                        System.out.println("Status");
+                        userService.userActivation();
+                        break;
+                    case 5:
+                        System.out.println("update");
+                        userService.updateUser();
+                        break;
+                    case 6:
+                        System.out.println("Delete");
+                        userService.deleteUser();
+                        break;
+                    case 7:
+                        System.out.println("Search");
+                        userService.searchUser();
+                        break;
+                    case 8:
+                        System.out.println("Returning to main menu");
+                        MainMenu();
+                    case 9:
+                        System.out.println("Exiting...");
+                        running = false;
+                    default:
+                        System.out.println("please enter a valid choice");
+                }
             }
-
         }
     }
 
     public void ProjectMenu(){
-        System.out.println("**********************");
-        System.out.println("* PROJECT MANAGEMENT *");
-        System.out.println("**********************");
-        System.out.println("1. Create new project");
-        System.out.println("2. Display projects");
-        System.out.println("3. Update project Details");
-        System.out.println("4. Filter Projects");
-        System.out.println("5. Delete Project");
-        System.out.println("6. Return To Main Menu");
-        System.out.println("\n Enter choice: ");
+        boolean running = true;
 
-        choice = scanner.nextInt();
+        while (running) {
+            System.out.println("**********************");
+            System.out.println("* PROJECT MANAGEMENT *");
+            System.out.println("**********************");
+            System.out.println("1. Create new project");
+            System.out.println("2. Display projects");
+            System.out.println("3. Update project Details");
+            System.out.println("4. Filter Projects");
+            System.out.println("5. Delete Project");
+            System.out.println("6. Return To Main Menu");
+            System.out.println("7.Exit system");
+            System.out.println("\n Enter choice: ");
 
-        if(choice != 0 ){
-            switch (choice){
-                case 1:
-                    System.out.println(" project creation ");
-                    projectService.createProject();
-                    break;
-                case 2:
-                    System.out.println("project list display");
-                    try {
-                        projectService.displayProjects();
-                    } catch (Exception t){
-                        System.out.println(t.getMessage());
-                    }
+            choice = scanner.nextInt();
 
-                    break;
-                case 3:
-                    System.out.println("update");
-                    projectService.updateProjectMenu();
-                    break;
-                case 4:
-                    System.out.println("Delete");
-                    projectService.deleteProject();
-                    break;
-                case 5:
-                    System.out.println("Search");
-                    System.out.println("Enter project id to search:");
-                    int id = scanner.nextInt();
-                    scanner.nextLine();
-                    projectService.findProjectById(id);
-                    break;
-                case 6:
-                    System.out.println("Return");
-                    new ConsoleMenu();
-                    break;
-                default:
-                    System.out.println("please enter a valid choice");
+            if (choice != 0) {
+                switch (choice) {
+                    case 1:
+                        System.out.println(" project creation ");
+                        projectService.createProject();
+                        break;
+                    case 2:
+                        System.out.println("project list display");
+                        try {
+                            projectService.displayProjects();
+                        } catch (EmptyProjectException e) {
+                            System.out.println(e.getMessage());
+                        }
+
+                        break;
+                    case 3:
+                        System.out.println("update");
+                        projectService.updateProjectMenu();
+                        break;
+                    case 4:
+                        System.out.println("Delete");
+                        projectService.deleteProject();
+                        break;
+                    case 5:
+                        System.out.println("Search");
+                        System.out.println("Enter project id to search:");
+                        int id = scanner.nextInt();
+                        scanner.nextLine();
+                        projectService.findProjectById(id);
+                        break;
+                    case 6:
+                        System.out.println("Return");
+                        MainMenu();
+                        break;
+                    case 7:
+                        System.out.println("Exiting...");
+                        running = false;
+                        break;
+                    default:
+                        System.out.println("please enter a valid choice");
+                }
+
             }
-
         }
     }
 
     public void TaskMenu(){
-        int taskId;
-        System.out.println("*******************");
-        System.out.println("* TASK MANAGEMENT *");
-        System.out.println("*******************");
-        System.out.println("1. Create new task");
-        System.out.println("2. Display project tasks");
-        System.out.println("3. Update task");
-        System.out.println("4. Delete task");
-        System.out.println("5. Return To Main Menu");
-        System.out.println("\n Enter choice: " );
+        boolean running = true;
 
-        choice = scanner.nextInt();
+        while (running) {
+            System.out.println("*******************");
+            System.out.println("* TASK MANAGEMENT *");
+            System.out.println("*******************");
+            System.out.println("1. Create new task");
+            System.out.println("2. Display project tasks");
+            System.out.println("3. Update task");
+            System.out.println("4. Delete task");
+            System.out.println("5. Return To Main Menu");
+            System.out.println("6.Exit system");
+            System.out.println("\n Enter choice: ");
 
-        if(choice != 0 ){
-            switch (choice){
-                case 1:
-                    System.out.println(" Task creation ");
-                    taskService.createTaskMenu(projectService, userService);
-                    break;
-                case 2:
-                    System.out.println("Task list display");
-                    try {
+            choice = scanner.nextInt();
+
+            if (choice != 0) {
+                switch (choice) {
+                    case 1:
+                        System.out.println(" Task creation ");
+                        taskService.createTaskMenu(projectService, userService);
+                        break;
+                    case 2:
+                        System.out.println("Task list display");
                         taskService.displayTasks();
-                    }catch (EmptyProjectException e){
-                        System.out.println(e.getMessage());
-                    }
-                    break;
-                case 3:
-                    System.out.println("Task update ");
-                    try {
-                        taskService.updateTaskMenu();
-                    }catch (TaskNotFoundException e){
-                        System.out.println(e.getMessage());
-                    }
-                    break;
-                case 4:
-                    System.out.println("Delete Task");
-                    System.out.println("Enter task id to delete:");
-                    taskId = scanner.nextInt();
-                    scanner.nextLine();
-                    try {
-                        taskService.deleteTask(taskId);
-                    }catch (TaskNotFoundException e){
-                        System.out.println(e.getMessage());
-                    }
-                    break;
-                case 6:
-                    System.out.println("Return ");
-                    new ConsoleMenu();
-                    break;
-                default:
-                    System.out.println("please enter a valid choice");
-            }
+                        break;
+                    case 3:
+                        System.out.println("Task update ");
+                        try {
+                            taskService.updateTaskMenu();
+                        } catch (TaskNotFoundException e) {
+                            System.out.println(e.getMessage());
+                        }
+                        break;
+                    case 4:
+                        try {
+                            taskService.deleteTask();
+                        } catch (TaskNotFoundException e) {
+                            System.out.println(e.getMessage());
+                        }
+                        break;
+                    case 5:
+                        System.out.println("Return ");
+                        MainMenu();
+                        break;
+                    case 6:
+                        System.out.println("Exiting...");
+                        running = false;
+                        break;
+                    default:
+                        System.out.println("please enter a valid choice");
+                }
 
+            }
+        }
+    }
+    public void showUpdateOptions(TaskCatalog task) {
+        boolean running = true;
+
+        while (running) {
+            System.out.println("\n==== UPDATE MENU ====");
+            System.out.println("1. Update Task Name");
+            System.out.println("2. Update Task Description");
+            System.out.println("3. Update Task Status");
+            System.out.println("4. Update Assigned User");
+            System.out.println("5. Update Project");
+            System.out.println("6. Exit Update Menu");
+            System.out.println("7. Exit system");
+            System.out.print("Choose an option: ");
+
+            choice = scanner.nextInt();
+
+            if (choice != 0) {
+
+                switch (choice) {
+                    case 1:
+                        taskService.updateTaskName(task);
+                        break;
+
+                    case 2:
+                        taskService.updateTaskDescription(task);
+                        break;
+
+                    case 3:
+                        taskService.updateTaskStatus(task);
+                        break;
+
+                    case 4:
+                        taskService.updateAssignedUser(task);
+                        break;
+
+                    case 5:
+                        taskService.updateProject(task);
+                        break;
+
+                    case 6:
+                        System.out.println("Exiting update menu...");
+                        MainMenu();
+                        break;
+                    case 7:
+                        System.out.println("Exiting...");
+                        running = false;
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Try again.");
+                }
+            }
         }
     }
 
 
 
-    public void ReportsMenu(){
-        System.out.println("**********************");
-        System.out.println("* Reports MANAGEMENT *");
-        System.out.println("**********************");
-        System.out.println("1. Project Completion Summary");
-        System.out.println("2. Task Completion Summary");
-        System.out.println("3. User Workload Summary");
-        System.out.println("4. Return To Main Menu");
-        System.out.println("\n Enter choice: " );
 
-        choice = scanner.nextInt();
-        scanner.nextLine();
+    public void ReportsMenu() {
+        boolean running = true;
 
-        if(choice != 0 ){
-            switch (choice){
-                case 1:
-                    reportService.projectCompletionSummary(projectService.getAllProjects());
-                    break;
-                case 2:
-                    reportService.taskCompletionSummary(taskService.getAllTasks());
-                    break;
-                case 3:
-                    reportService.userWorkloadSummary(userService.getAllUsers(), taskService.getAllTasks());
-                    break;
-                case 4:
-                    System.out.println("Returning");
-                    new ConsoleMenu();
-                    break;
-                default:
-                    System.out.println("please enter a valid choice");
+        while (running) {
+            System.out.println("**********************");
+            System.out.println("* Reports MANAGEMENT *");
+            System.out.println("**********************");
+            System.out.println("1. Project Completion Summary");
+            System.out.println("2. Task Completion Summary");
+            System.out.println("3. User Workload Summary");
+            System.out.println("4. Return To Main Menu");
+            System.out.println("5. Exit system");
+            System.out.println("\n Enter choice: ");
+
+            choice = scanner.nextInt();
+            scanner.nextLine();
+
+            if (choice != 0) {
+                switch (choice) {
+                    case 1:
+                        reportService.projectCompletionSummary(projectService.getAllProjects());
+                        break;
+                    case 2:
+                        reportService.taskCompletionSummary(taskService.getAllTasks());
+                        break;
+                    case 3:
+                        reportService.userWorkloadSummary(userService.getAllUsers(), taskService.getAllTasks());
+                        break;
+                    case 4:
+                        System.out.println("Returning");
+                        MainMenu();
+                        break;
+                    case 5:
+                        System.out.println("Exiting...");
+                        running = false ;
+                        break;
+                    default:
+                        System.out.println("please enter a valid choice");
+                }
+
             }
-
         }
     }
 }

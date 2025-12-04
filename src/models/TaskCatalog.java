@@ -2,14 +2,14 @@ package models;
 
 public class TaskCatalog {
 
-    private final int taskId;
+    private final String taskId;
     private String taskName;
     private String taskDescription;
     private TaskStatus taskStatus;
     private int assignedUserId;
-    private final int projectID;
+    private int projectID;
 
-    public TaskCatalog(int taskId, String taskName, String taskDescription, int projectID) {
+    public TaskCatalog(String taskId, String taskName, String taskDescription, int projectID) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
@@ -18,7 +18,7 @@ public class TaskCatalog {
         this.projectID = projectID;
     }
 
-    public int getTaskId() {
+    public String getTaskId() {
         return taskId;
     }
 
@@ -45,13 +45,14 @@ public class TaskCatalog {
     public void setAssignedUserId(int assignedUserId) {
         this.assignedUserId = assignedUserId;
     }
-    public int getProjectID(){
-        return projectID;
+
+    public void setProjectID(int projectID) {
+        this.projectID = projectID;
     }
 
     @Override
     public String toString() {
-        return "Task{id=" + taskId + ", name='" + taskName + "', status=" + taskStatus +
+        return "Task{id=" + taskId + ", name='" + taskName + "', status=" + taskStatus + ", Description= " + taskDescription +
                 ", assignedUserId=" + assignedUserId + ", projectId=" + projectID + "}";
     }
 }
