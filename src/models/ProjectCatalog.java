@@ -45,6 +45,10 @@ public abstract class ProjectCatalog {
         tasks.add(task);
     }
 
+    public List<TaskCatalog> getTasks() {
+        return tasks;
+    }
+
     @Override
     public String toString(){
         return "User{id=" + projectID + ", name='" +projectName + ", Description = " + projectDescription + ", Deadline = "+ projectDeadline + ", Category = "+ projectCategory + "}";

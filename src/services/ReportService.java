@@ -2,46 +2,53 @@ package services;
 
 import models.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import interfaces.CompletablesReport;
+import utils.exceptions.*;
 
-public class ReportService {
-    protected List<TaskCatalog> tasks = new ArrayList<>();
+public class ReportService implements CompletablesReport{
 
-    public void projectCompletionSummary(List<ProjectCatalog> projects) {
+    @Override
+    public void projectCompletionSummary(List<ProjectCatalog> projects) throws EmptyProjectException{
         if (projects.isEmpty()) {
-            System.out.println("No projects found.");
-            return;
+            throw new EmptyProjectException("No projects found.");
         }
-        System.out.println("Project Completion Summary:");
+        System.out.println("======Project Completion Summary======");
         for (ProjectCatalog project : projects) {
-            System.out.println("Project " + project.getProjectName() + ": " + getCompletionPercentage() + "% complete.");
+            System.out.println("Project " + project.getProjectName() + ": " + getCompletionPercentage(project) + "% complete.");
         }
     }
-    public double getCompletionPercentage(){
+    public double getCompletionPercentage(ProjectCatalog projectCatalog){
+        List<TaskCatalog> tasks = projectCatalog.getTasks();
         if (tasks.isEmpty()){
-            return 0;
+            System.out.println("No tasks found");
+            return 0.0;
         }
         double completed = tasks.stream()
                 .filter(t -> t.getTaskStatus()== TaskStatus.COMPLETED)
                 .count();
-        return (completed * 100.0) / tasks.size();
+        return(completed * 100.0) / tasks.size();
     }
 
-    public void taskCompletionSummary(List<TaskCatalog> tasks) {
+    @Override
+    public void taskCompletionSummary(List<TaskCatalog> tasks) throws EmptyProjectException{
         if (tasks.isEmpty()) {
-            System.out.println("No tasks found.");
-            return;
+            throw new EmptyProjectException("No tasks found.");
         }
         double completed = tasks.stream().filter(t -> t.getTaskStatus() == TaskStatus.COMPLETED).count();
+        double inProgress = tasks.stream() .filter(t ->t.getTaskStatus()==TaskStatus.IN_PROGRESS).count();
+        double notStarted = tasks.stream() .filter(t ->t.getTaskStatus()==TaskStatus.NOT_STARTED).count();
         double total = tasks.size();
         double percent = (completed / total) * 100;
         System.out.println("Task Completion Summary:");
         System.out.println("Total tasks: " + tasks.size());
         System.out.println("Completed: " + completed);
-        System.out.println("Percentage:" + percent);
+        System.out.println("In-Progress: " + inProgress);
+        System.out.println("Not yet started: " + notStarted);
+        System.out.println("Percentage of completed tasks:" + percent);
     }
 
+    @Override
     public void userWorkloadSummary(List<UserCatalog> users, List<TaskCatalog> tasks) {
         if (users.isEmpty()) {
             System.out.println("No users found.");

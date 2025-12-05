@@ -19,8 +19,7 @@ public class ConsoleMenu {
     private  final ReportService reportService = new ReportService();
 
     public void MainMenu(){
-        boolean running = true;
-        while (running) {
+        while (true) {
             System.out.println("******************");
             System.out.println("* DASHBOARD MENU *");
             System.out.println("******************");
@@ -28,7 +27,7 @@ public class ConsoleMenu {
             System.out.println("2. Project Management");
             System.out.println("3. Task Management");
             System.out.println("4. Reports");
-            System.out.println("5.Exit System");
+            System.out.println("5. Exit System");
             System.out.println("\n Enter choice: ");
 
             choice = scanner.nextInt();
@@ -54,8 +53,7 @@ public class ConsoleMenu {
                         break;
                     case 5:
                         System.out.println("Exiting...");
-                        running = false;
-                        break;
+                        return;
                     default:
                         System.out.println("please enter a valid choice");
                 }
@@ -65,10 +63,9 @@ public class ConsoleMenu {
     }
 
     public void UserMenu(){
-        boolean running = true;
         int userId;
 
-        while(running) {
+        while(true) {
             System.out.println("*******************");
             System.out.println("* USER MANAGEMENT *");
             System.out.println("*******************");
@@ -123,7 +120,8 @@ public class ConsoleMenu {
                         MainMenu();
                     case 9:
                         System.out.println("Exiting...");
-                        running = false;
+                        System.exit(0);
+                        break;
                     default:
                         System.out.println("please enter a valid choice");
                 }
@@ -132,9 +130,7 @@ public class ConsoleMenu {
     }
 
     public void ProjectMenu(){
-        boolean running = true;
-
-        while (running) {
+        while (true) {
             System.out.println("**********************");
             System.out.println("* PROJECT MANAGEMENT *");
             System.out.println("**********************");
@@ -144,7 +140,7 @@ public class ConsoleMenu {
             System.out.println("4. Filter Projects");
             System.out.println("5. Delete Project");
             System.out.println("6. Return To Main Menu");
-            System.out.println("7.Exit system");
+            System.out.println("7. Exit system");
             System.out.println("\n Enter choice: ");
 
             choice = scanner.nextInt();
@@ -185,7 +181,7 @@ public class ConsoleMenu {
                         break;
                     case 7:
                         System.out.println("Exiting...");
-                        running = false;
+                        System.exit(0);
                         break;
                     default:
                         System.out.println("please enter a valid choice");
@@ -196,9 +192,8 @@ public class ConsoleMenu {
     }
 
     public void TaskMenu(){
-        boolean running = true;
 
-        while (running) {
+        while (true) {
             System.out.println("*******************");
             System.out.println("* TASK MANAGEMENT *");
             System.out.println("*******************");
@@ -243,7 +238,7 @@ public class ConsoleMenu {
                         break;
                     case 6:
                         System.out.println("Exiting...");
-                        running = false;
+                        System.exit(0);
                         break;
                     default:
                         System.out.println("please enter a valid choice");
@@ -253,9 +248,7 @@ public class ConsoleMenu {
         }
     }
     public void showUpdateOptions(TaskCatalog task) {
-        boolean running = true;
-
-        while (running) {
+        while (true) {
             System.out.println("\n==== UPDATE MENU ====");
             System.out.println("1. Update Task Name");
             System.out.println("2. Update Task Description");
@@ -297,7 +290,7 @@ public class ConsoleMenu {
                         break;
                     case 7:
                         System.out.println("Exiting...");
-                        running = false;
+                        System.exit(0);
                         break;
                     default:
                         System.out.println("Invalid choice. Try again.");
@@ -310,9 +303,8 @@ public class ConsoleMenu {
 
 
     public void ReportsMenu() {
-        boolean running = true;
 
-        while (running) {
+        while (true) {
             System.out.println("**********************");
             System.out.println("* Reports MANAGEMENT *");
             System.out.println("**********************");
@@ -329,10 +321,18 @@ public class ConsoleMenu {
             if (choice != 0) {
                 switch (choice) {
                     case 1:
-                        reportService.projectCompletionSummary(projectService.getAllProjects());
+                        try {
+                            reportService.projectCompletionSummary(projectService.getAllProjects());
+                        }catch (EmptyProjectException e){
+                            System.out.println(e.getMessage());
+                        }
                         break;
                     case 2:
-                        reportService.taskCompletionSummary(taskService.getAllTasks());
+                        try {
+                            reportService.taskCompletionSummary(taskService.getAllTasks());
+                        }catch (EmptyProjectException e){
+                            System.out.println(e.getMessage());
+                        }
                         break;
                     case 3:
                         reportService.userWorkloadSummary(userService.getAllUsers(), taskService.getAllTasks());
@@ -343,7 +343,7 @@ public class ConsoleMenu {
                         break;
                     case 5:
                         System.out.println("Exiting...");
-                        running = false ;
+                        System.exit(0);
                         break;
                     default:
                         System.out.println("please enter a valid choice");
