@@ -1,0 +1,8 @@
+models\UserCatalogTest$TestUser.class
+models\ProjectCatalogTest.class
+services\UserServiceTest.class
+models\UserCatalogTest.class
+services\ProjectServiceTest.class
+services\ReportServiceTest.class
+models\TaskCatalogTest.class
+services\TaskServiceTest.class
