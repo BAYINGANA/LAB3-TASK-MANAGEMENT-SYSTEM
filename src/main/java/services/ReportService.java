@@ -45,7 +45,7 @@ public class ReportService implements CompletablesReport{
         System.out.println("Completed: " + completed);
         System.out.println("In-Progress: " + inProgress);
         System.out.println("Not yet started: " + notStarted);
-        System.out.println("Percentage of completed tasks:" + percent);
+        System.out.println("Percentage of completed tasks: %.2f%%%n" + percent);
     }
 
     @Override
