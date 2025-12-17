@@ -1,5 +1,6 @@
 package services;
 
+import utils.RegexValidator;
 import utils.exceptions.EmptyProjectException;
 import utils.exceptions.InvalidInputException;
 import utils.exceptions.TaskNotFoundException;
@@ -21,6 +22,7 @@ public class TaskService {
     private static String generateTaskId() {
         taskCounter++;
         String taskId = "TS" + String.format("%03d", taskCounter);
+        RegexValidator.isValidTaskId(taskId);
         System.out.println("Auto-generated Task ID: " + taskId);
         return taskId;
     }

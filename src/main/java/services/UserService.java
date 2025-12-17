@@ -1,5 +1,6 @@
 package services;
 
+import utils.RegexValidator;
 import utils.exceptions.InvalidInputException;
 import utils.exceptions.UserNotFoundException;
 import models.UserCatalog;
@@ -20,6 +21,7 @@ public class UserService {
     private static String generateUserId() {
         userCounter++;
         String userId = "UR" + String.format("%03d", userCounter);
+        RegexValidator.isValidUserId(userId);
         System.out.println("Auto-generated User ID: UR" + userId);
         return userId;
     }

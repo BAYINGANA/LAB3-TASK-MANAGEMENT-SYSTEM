@@ -4,6 +4,7 @@ import models.HardwareProject;
 import models.ProjectCatalog;
 import models.SoftwareProject;
 import utils.ConsoleMenu;
+import utils.RegexValidator;
 import utils.ValidationUtils;
 import utils.exceptions.EmptyProjectException;
 import utils.exceptions.InvalidInputException;
@@ -20,6 +21,7 @@ public class ProjectService {
     private static String generateProjectId() {
         projectCounter++;
         String projectId = "PR" + String.format("%03d", projectCounter);
+        RegexValidator.isValidProjectId(projectId);
         System.out.println("Auto-generated Project ID: " + projectId);
         return projectId;
     }
