@@ -9,15 +9,14 @@ import models.TaskStatus;
 import utils.ConsoleMenu;
 import utils.ValidationUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class TaskService {
-    private static final List<TaskCatalog> tasks = new ArrayList<>();
+    private static final Map<String,TaskCatalog> tasks = new HashMap<>();
     private static final Scanner scanner = new Scanner(System.in);
     private static int taskCounter = 0;
 
+    //Generate ID
     private static String generateTaskId() {
         taskCounter++;
         String taskId = "TS" + String.format("%03d", taskCounter);
@@ -26,19 +25,22 @@ public class TaskService {
     }
 
     public List<TaskCatalog> getAllTasks() {
-        return tasks;
+
+        return new ArrayList<>(tasks.values());
     }
 
     public TaskCatalog findTaskById(String id) throws TaskNotFoundException {
-        for (TaskCatalog task : tasks) {
-            if (task.getTaskId().equals(id)) {
-                return task;
-            }
-        }
-        throw new TaskNotFoundException("TASK NOT FOUND!!");
+        TaskCatalog task = tasks.get(id);
+        if (task == null) throw new TaskNotFoundException("TASK NOT FOUND!!");
+        return task;
     }
+
+    /*=========================CREATE TASK=======================*/
+
     public void createTaskMenu(ProjectService projectService, UserService userService) {
         String taskId = generateTaskId();
+
+        //validate name
         String name;
         while (true) {
             System.out.println("Enter task name:");
@@ -50,6 +52,8 @@ public class TaskService {
                 System.out.println(e.getMessage());
             }
         }
+
+        //validate description input
         String desc;
         do {
             System.out.println("Enter task description:");
@@ -81,19 +85,22 @@ public class TaskService {
         if (ValidationUtils.isNotEmpty(assignedUserId)) {
             task.setAssignedUserId(assignedUserId);
         }
-        tasks.add(task);
+        tasks.put(taskId, task);
         project.addTask(task);
         System.out.println("Task created and assigned to project.");
     }
+
+    /*=====================DISPLAY TASKS=================*/
 
     public void displayTasks() {
         if (tasks.isEmpty()) {
             System.out.println("NO TASKS AVAILABLE");
         }
-        for (TaskCatalog task : tasks) {
-            System.out.println(task);
-        }
+        tasks.values().forEach(System.out::println);
     }
+
+   /*=======================DELETE TASK====================*/
+
     public void deleteTask() throws TaskNotFoundException {
         System.out.println("Available Tasks:");
         System.out.println("================");
@@ -103,14 +110,15 @@ public class TaskService {
         }else {
             System.out.println("Enter task id to delete:");
             String taskId = scanner.nextLine();
-            TaskCatalog task = findTaskById(taskId);
-            if (task != null && tasks.remove(task)) {
+            if (tasks.remove(taskId) != null) {
                 System.out.println("Task deleted.");
             } else {
                 throw new TaskNotFoundException("Task not found.");
             }
         }
     }
+
+    /*==========================UPDATE TASK==================*/
 
     public void updateTaskMenu() throws TaskNotFoundException {
         System.out.println("Available Tasks:");
@@ -131,6 +139,7 @@ public class TaskService {
             System.out.println("Task updated.");
         }
     }
+
      public void updateTaskName(TaskCatalog task){
          System.out.println("Enter new task name:");
          String name = scanner.nextLine();
