@@ -40,6 +40,10 @@ public abstract class UserCatalog {
         this.email = email;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public UserStatus getStatus() {
         return status;
     }

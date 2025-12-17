@@ -1,31 +1,37 @@
 package services;
 
+import models.adminUser;
+import models.regularUser;
 import utils.exceptions.InvalidInputException;
 import utils.exceptions.UserNotFoundException;
 import models.UserCatalog;
 import models.UserStatus;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import utils.ConsoleMenu;
 import utils.ValidationUtils;
 
 public class UserService {
-    private static final List<UserCatalog> users = new ArrayList<>();
+    private static final Map<String, UserCatalog> users = new HashMap<>();
     private static final Scanner scanner = new Scanner(System.in);
     private static int userCounter = 0;
+
+    /* ====================USER ID==================*/
 
     private static String generateUserId() {
         userCounter++;
         String userId = "UR" + String.format("%03d", userCounter);
-        System.out.println("Auto-generated User ID: UR" + userId);
+        System.out.println("Auto-generated User ID: " + userId);
         return userId;
     }
 
+    /*==================CREATE USER==================*/
+
     public void createUser() throws InvalidInputException {
         String id = generateUserId();
+
+        //Name validation
         String name;
         while (true) {
             System.out.println("Enter user name:");
@@ -38,6 +44,7 @@ public class UserService {
             }
         }
 
+        //Password validation
         String password;
         while(true) {
             System.out.println("Enter password:");
@@ -50,6 +57,7 @@ public class UserService {
                 System.out.println(e.getMessage());
             }
         }
+        //Email validation
         String email;
         while (true) {
             System.out.println("Enter user email:");
@@ -61,90 +69,83 @@ public class UserService {
             }
         }
 
+        //User type
         while (true) {
             System.out.println("Select user type (1=admin, 2=regular):");
             String input = scanner.nextLine().trim();
 
-            if (input.isEmpty()) {
-                System.out.println("Input cannot be empty. Please enter 1 or 2.");
-                continue;
-            }
-
-            int type;
-
             try {
-                type = Integer.parseInt(input);
+                int type = Integer.parseInt(input);
+                UserCatalog newUser;
+
+                if (type == 1) {
+                    newUser = new adminUser(id, name, password, email);
+                    users.put(id,newUser);
+                    System.out.println("User created successfully! -> " + newUser);
+                    break;
+                } else if (type == 2) {
+                    newUser = new regularUser(id, name, password, email);
+                    users.put(id,newUser);
+                    System.out.println("User created successfully! -> " + newUser);
+                    break;
+                } else {
+                    System.out.println("!!!Invalid choice!!!");
+                }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a number (1 or 2).");
-                continue;
-            }
-            UserCatalog newUser;
-            if (type == 1) {
-                newUser = new models.adminUser(id, name, password, email);
-                users.add(newUser);
-                System.out.println("User created successfully! -> " + newUser);
-                break;
-            } else if (type == 2) {
-                newUser = new models.regularUser(id, name, password, email);
-                users.add(newUser);
-                System.out.println("User created successfully! -> " + newUser);
-                break;
-            } else {
-                System.out.println("!!!Invalid choice!!!");
             }
         }
     }
 
-    public List<UserCatalog> getAllUsers(){
-        System.out.println("LIST OF ALL SYSTEM USERS");
+    /*=================READ USERS================*/
+
+    public List<UserCatalog>getAllUsers(){
+        System.out.println("====LIST OF ALL SYSTEM USERS====");
         if (users.isEmpty()){
             System.out.println("NO user found");
         }
-        for (UserCatalog u : users) {
-            System.out.println(u);
-        }
-       return users;
+        return users.values()
+                .stream()
+                .toList();
     }
 
     public UserCatalog findUserById(String id) throws UserNotFoundException {
-        for(UserCatalog user : users){
-            if(user.getId().equals(id)){
-                System.out.println(user);
-                return user;
-            }
-        }
-        throw new UserNotFoundException("User Not Found");
+        return users.values()
+                .stream()
+                .filter(u -> u.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new UserNotFoundException("User Not Found"));
     }
+
+    /* ==================USER ACTIVATION================== */
 
     public void userActivation(){
         System.out.println("Enter user ID to update status:");
         String userId = scanner.nextLine();
 
-        boolean found = false;
-        for(UserCatalog user : users){
-            if (user.getId().equals(userId)){
-                if (user.getStatus() == UserStatus.ACTIVE){
-                    user.setStatus(UserStatus.INACTIVE);
-                }
-                else {
-                    user.setStatus(UserStatus.ACTIVE);
-                }
-                System.out.println("Status updated: " + user.getStatus());
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            System.out.println("User not found");
-        }
+        users.values().stream()
+                .filter(u -> u.getId().equals(userId))
+                .findFirst()
+                .ifPresentOrElse(
+                        u -> {
+                            u.setStatus(
+                                    u.getStatus() == UserStatus.ACTIVE
+                                            ? UserStatus.INACTIVE
+                                            : UserStatus.ACTIVE
+                            );
+                            System.out.println("Status updated: " + u.getStatus());
+                        },
+                        () -> System.out.println("User not found")
+                );
     }
+
+    /* ====================UPDATE USER==================== */
 
     public void updateUser() throws UserNotFoundException{
         getAllUsers();
         System.out.println("Enter user ID to update:");
         String userId =scanner.nextLine();
-        UserCatalog user;
-        user = findUserById(userId);
+        UserCatalog user = findUserById(userId);
         if (user == null){
         throw new UserNotFoundException("User not found");
         }
@@ -202,24 +203,29 @@ public class UserService {
         }
     }
 
+    /*=================DELETE  USER===============*/
+
     public void deleteUser(){
         getAllUsers();
         System.out.println("Enter user ID to delete:");
         String userId = scanner.nextLine();
-        users.removeIf(u -> u.getId().equals(userId));
-        System.out.println("User deleted!!");
+        if(users.remove(userId) != null){
+            System.out.println("User not found");
+        }
     }
+
+    /* ==================Search USER================== */
+
     public void searchUser(){
         System.out.println("Enter name to search:");
         String search = scanner.nextLine().toLowerCase();
 
-        boolean found = false ;
-        for (UserCatalog user : users) {
-            if (user.getName().toLowerCase().contains(search)) {
-                System.out.println("FOUND ----> " + user);
-                found = true;
-            }
-        }
+        boolean found = users.values()
+                .stream()
+                .filter(u -> u.getName().toLowerCase().contains(search))
+                .peek(u -> System.out.println("FOUND----> " + u))
+                .findAny()
+                .isPresent();
         if (!found) {
             System.out.println("user not found");
         }
