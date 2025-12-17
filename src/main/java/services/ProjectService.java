@@ -8,14 +8,14 @@ import utils.ValidationUtils;
 import utils.exceptions.EmptyProjectException;
 import utils.exceptions.InvalidInputException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ProjectService {
-    private static final List<ProjectCatalog> projects = new ArrayList<>();
+    private static final Map<String,ProjectCatalog> projects = new HashMap<>();
     private static final Scanner scanner = new Scanner(System.in);
     private static int projectCounter = 0;
+
+    //Generate ID for projrct
 
     private static String generateProjectId() {
         projectCounter++;
@@ -25,23 +25,30 @@ public class ProjectService {
     }
 
     public void addProject(ProjectCatalog project) {
-        projects.add(project);
+        projects.put(project.getProjectID(),project);
         System.out.println("Project added successfully.");
     }
 
     public List<ProjectCatalog> getAllProjects() {
-        return projects;
+
+        return new ArrayList<>(projects.values());
     }
 
+    /*==================SEARCH PROJECT===============*/
+
     public ProjectCatalog findProjectById(String id) {
-        return projects.stream().filter(p -> p.getProjectID().equals(id)).findFirst().orElse(null);
+        return projects.get(id);
     }
+
+    /*==================CREATE PROJECT=================*/
 
     public void createProject() {
         System.out.println("Enter project type (1.software/ 2.hardware):");
         int type = scanner.nextInt();
         scanner.nextLine();
         String id = generateProjectId();
+
+        //validate name
         String name;
         while (true) {
             System.out.println("Enter project name:");
@@ -56,6 +63,8 @@ public class ProjectService {
 
         System.out.println("Enter project description:");
         String description = scanner.nextLine();
+
+        //validate deadline
         String deadline ;
         while (true){
             System.out.println("Enter project deadline(dd/mm/yyyy):");
@@ -80,14 +89,16 @@ public class ProjectService {
         addProject(project);
     }
 
+    /*====================DISPLAY PROJECTS======================*/
+
     public void displayProjects() throws EmptyProjectException {
         if (projects.isEmpty()) {
             throw new EmptyProjectException("No projects found");
         }
-        for (ProjectCatalog project : projects) {
-            System.out.println(project);
-        }
+        projects.values().forEach(System.out::println);
     }
+
+    /*=====================UPDATE PROJECT======================*/
 
     public void updateProjectMenu () {
         try{
@@ -108,11 +119,12 @@ public class ProjectService {
         System.out.println("Project updated successfully.");
     }
 
+    /*=====================DELETE PROJECT==================*/
+
     public void deleteProject() {
         System.out.println("Enter project ID to delete:");
         String id = scanner.nextLine();
-        ProjectCatalog project = findProjectById(id);
-        if (project != null && projects.remove(project)) {
+        if (projects.remove(id) != null) {
             System.out.println("Project deleted.");
         } else {
             System.out.println("Project not found.");
