@@ -28,6 +28,18 @@ public abstract class ProjectCatalog {
         return projectName;
     }
 
+    public String getProjectDescription() {
+        return projectDescription;
+    }
+
+    public String getProjectDeadline() {
+        return projectDeadline;
+    }
+
+    public String getProjectCategory() {
+        return projectCategory;
+    }
+
     public void setProjectName(String projectName) {
         this.projectName = projectName;
     }

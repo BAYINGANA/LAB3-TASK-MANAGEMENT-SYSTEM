@@ -13,13 +13,20 @@ import utils.exceptions.TaskNotFoundException;
 
 import java.util.Scanner;
 
+
 public class ConsoleMenu {
-    private  static final Scanner scanner =new Scanner(System.in);
-    int choice ;
-    private final UserService userService = new UserService();
-    private final ProjectService projectService = new ProjectService();
-    private final TaskService taskService = new TaskService();
-    private  final ReportService reportService = new ReportService();
+    private static final Scanner scanner = new Scanner(System.in);
+    int choice;
+    private final UserService userService;
+    private final ProjectService projectService;
+    private final TaskService taskService;
+    private final ReportService reportService = new ReportService();
+
+    public ConsoleMenu(ProjectService projectService, UserService userService, TaskService taskService) {
+        this.projectService = projectService;
+        this.userService = userService;
+        this.taskService = taskService;
+    }
 
     public void MainMenu(){
         while (true) {

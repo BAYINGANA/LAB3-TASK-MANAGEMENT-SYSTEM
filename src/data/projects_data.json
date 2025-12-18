@@ -1,0 +1,6 @@
+[USERS]
+U|UR001|ghfds|d2@|ACTIVE|adminUser|dfd@gmail.com
+[PROJECTS]
+P|PR001|hgjkl|fgdsa|Software|12/12/2025|SoftwareProject
+[TASKS]
+T|TS001|hahaha|gfdsa|NOT_STARTED|UR001|PR001

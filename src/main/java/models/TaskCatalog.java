@@ -54,6 +54,11 @@ public class TaskCatalog {
         this.assignedUserId = assignedUserId;
     }
 
+
+    public String getProjectID() {
+        return projectID;
+    }
+
     public void setProjectID(String projectID) {
         this.projectID = projectID;
     }
