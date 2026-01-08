@@ -109,10 +109,7 @@ public class ProjectService {
             System.out.println("Project not found.");
             return;
         }
-        // You must pass all services to ConsoleMenu now. Example below assumes you have access to them:
-        // ConsoleMenu consoleMenu = new ConsoleMenu(this, userService, taskService);
-        // For now, just print a message to avoid compile error:
-        System.out.println("Project update options would be shown here (ConsoleMenu requires all services).");
+        ConsoleMenu consoleMenu = new ConsoleMenu(this, userService, taskService);
 
         System.out.println("Project updated successfully.");
     }
