@@ -157,7 +157,6 @@ public class UserService {
         throw new UserNotFoundException("User not found");
         }
         ConsoleMenu console = new ConsoleMenu(projectService, this, taskService);
-        System.out.println("User update options would be shown here (ConsoleMenu requires all services).");
         System.out.println("User updated.");
     }
 
