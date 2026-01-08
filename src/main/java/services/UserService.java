@@ -156,9 +156,7 @@ public class UserService {
         if (user == null){
         throw new UserNotFoundException("User not found");
         }
-        // You must pass all services to ConsoleMenu now. Example below assumes you have access to them:
-        // ConsoleMenu console = new ConsoleMenu(projectService, this, taskService);
-        // For now, just print a message to avoid compile error:
+        ConsoleMenu console = new ConsoleMenu(projectService, this, taskService);
         System.out.println("User update options would be shown here (ConsoleMenu requires all services).");
         System.out.println("User updated.");
     }
