@@ -141,9 +141,6 @@ public class TaskService {
             if (task == null) {
                 throw new TaskNotFoundException("Task not found.");
             }
-            // You must pass all services to ConsoleMenu now. Example below assumes you have access to them:
-            // ConsoleMenu console = new ConsoleMenu(projectService, userService, this);
-            // For now, just print a message to avoid compile error:
             System.out.println("Task update options would be shown here (ConsoleMenu requires all services).");
             System.out.println("Task updated.");
         }
