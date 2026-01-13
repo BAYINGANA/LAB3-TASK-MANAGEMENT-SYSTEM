@@ -120,10 +120,6 @@ java -cp target/classes Main
 - Update task status
 - Delete tasks
 
-
-### Multithreading & Concurrency
-- Supports concurrent (multi-user) task updates using synchronized methods and thread pools for simulation and testing.
-
 ### Reports
 - Project completion summaries
 - Task completion statistics
