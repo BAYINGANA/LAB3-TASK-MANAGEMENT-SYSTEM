@@ -11,38 +11,15 @@ public class FileUtils {
     private static final Path FILE = Paths.get("src", "data", "projects_data.json");
 
     public static void saveAll(List<UserCatalog> users, List<ProjectCatalog> projects, List<TaskCatalog> tasks) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{\n");
-        // Users
-        sb.append("  \"users\": [\n");
-        for (int i = 0; i < users.size(); i++) {
-            UserCatalog u = users.get(i);
-            sb.append(String.format("    {\"id\": \"%s\", \"name\": \"%s\", \"password\": \"%s\", \"status\": \"%s\", \"type\": \"%s\", \"email\": \"%s\"}%s\n",
-                u.getId(), u.getName(), u.getPassword(), u.getStatus().name(), u.getClass().getSimpleName(), u.getEmail(),
-                (i < users.size() - 1) ? "," : ""));
-        }
-        sb.append("  ],\n");
-        // Projects
-        sb.append("  \"projects\": [\n");
-        for (int i = 0; i < projects.size(); i++) {
-            ProjectCatalog p = projects.get(i);
-            sb.append(String.format("    {\"id\": \"%s\", \"name\": \"%s\", \"description\": \"%s\", \"category\": \"%s\", \"deadline\": \"%s\", \"type\": \"%s\"}%s\n",
-                p.getProjectID(), p.getProjectName(), p.getProjectDescription(), p.getProjectCategory(), p.getProjectDeadline(), p.getClass().getSimpleName(),
-                (i < projects.size() - 1) ? "," : ""));
-        }
-        sb.append("  ],\n");
-        // Tasks
-        sb.append("  \"tasks\": [\n");
-        for (int i = 0; i < tasks.size(); i++) {
-            TaskCatalog t = tasks.get(i);
-            sb.append(String.format("    {\"id\": \"%s\", \"name\": \"%s\", \"description\": \"%s\", \"status\": \"%s\", \"assignedUser\": \"%s\", \"projectId\": \"%s\"}%s\n",
-                t.getTaskId(), t.getTaskName(), t.getTaskDescription(), t.getTaskStatus().name(), t.getAssignedUserId(), t.getProjectID(),
-                (i < tasks.size() - 1) ? "," : ""));
-        }
-        sb.append("  ]\n");
-        sb.append("}\n");
+        List<String> lines = new ArrayList<>();
+        lines.add("[USERS]");
+        users.forEach(u -> lines.add(String.join("|", "U", u.getId(), u.getName(), u.getPassword(), u.getStatus().name(), u.getClass().getSimpleName(), u.getEmail())));
+        lines.add("[PROJECTS]");
+        projects.forEach(p -> lines.add(String.join("|", "P", p.getProjectID(), p.getProjectName(), p.getProjectDescription(), p.getProjectCategory(), p.getProjectDeadline(), p.getClass().getSimpleName())));
+        lines.add("[TASKS]");
+        tasks.forEach(t -> lines.add(String.join("|", "T", t.getTaskId(), t.getTaskName(), t.getTaskDescription(), t.getTaskStatus().name(), t.getAssignedUserId(), t.getProjectID())));
         try {
-            Files.writeString(FILE, sb.toString(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            Files.write(FILE, lines, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
             System.out.println("[INFO] Data saved to " + FILE.toString());
         } catch (IOException e) {
             System.err.println("[ERROR] Failed to save data: " + e.getMessage());
