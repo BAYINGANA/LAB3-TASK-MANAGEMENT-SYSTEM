@@ -16,6 +16,7 @@ public class Main {
         UserService userService = new UserService((List<UserCatalog>) loaded.get("users"));
         ProjectService projectService = new ProjectService((List<ProjectCatalog>) loaded.get("projects"));
         TaskService taskService = new TaskService((List<TaskCatalog>) loaded.get("tasks"));
+        taskService.linkTasksToProjects(projectService);
         ConsoleMenu menu = new ConsoleMenu(projectService, userService, taskService);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             FileUtils.saveAll(userService.getAllUsers(), projectService.getAllProjects(), taskService.getAllTasks());

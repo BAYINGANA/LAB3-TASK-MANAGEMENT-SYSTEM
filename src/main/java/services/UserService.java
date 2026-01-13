@@ -21,14 +21,28 @@ public class UserService {
     public UserService(List<UserCatalog> loadedUsers) {
         users.clear();
         if (loadedUsers != null) users.addAll(loadedUsers);
+        initializeUserCounter(loadedUsers);
     }
     public UserService() { this(new ArrayList<>()); }
+
+    private static void initializeUserCounter(List<UserCatalog> loadedUsers) {
+        int max = 0;
+
+        for (UserCatalog user : loadedUsers) {
+            String id = user.getId();
+            int num = Integer.parseInt(id.substring(2));
+            if (num > max) {
+                max = num;
+            }
+        }
+        userCounter = max;
+    }
 
     private static String generateUserId() {
         userCounter++;
         String userId = "UR" + String.format("%03d", userCounter);
         RegexValidator.isValidUserId(userId);
-        System.out.println("Auto-generated User ID: UR" + userId);
+        System.out.println("Auto-generated User ID:" + userId);
         return userId;
     }
 
@@ -104,6 +118,9 @@ public class UserService {
     }
 
     public List<UserCatalog> getAllUsers(){
+        return users;
+    }
+    public void displayAllUsers(){
         System.out.println("LIST OF ALL SYSTEM USERS");
         if (users.isEmpty()){
             System.out.println("NO user found");
@@ -111,7 +128,6 @@ public class UserService {
         for (UserCatalog u : users) {
             System.out.println(u);
         }
-       return users;
     }
 
     public UserCatalog findUserById(String id) throws UserNotFoundException {
@@ -147,8 +163,8 @@ public class UserService {
         }
     }
 
-    public void updateUser() throws UserNotFoundException{
-        getAllUsers();
+    public void updateUser(ProjectService projectService, TaskService taskService) throws UserNotFoundException{
+        displayAllUsers();
         System.out.println("Enter user ID to update:");
         String userId =scanner.nextLine();
         UserCatalog user;
@@ -156,7 +172,9 @@ public class UserService {
         if (user == null){
         throw new UserNotFoundException("User not found");
         }
+
         ConsoleMenu console = new ConsoleMenu(projectService, this, taskService);
+        console.showUserUpdateOptions(user);
         System.out.println("User updated.");
     }
 
@@ -210,7 +228,7 @@ public class UserService {
     }
 
     public void deleteUser(){
-        getAllUsers();
+        displayAllUsers();
         System.out.println("Enter user ID to delete:");
         String userId = scanner.nextLine();
         users.removeIf(u -> u.getId().equals(userId));

@@ -99,7 +99,6 @@ java -cp target/classes Main
 - On every save or load, a clear `[INFO]` message is printed to the console.
 - Any file IO errors are reported with `[ERROR]` messages.
 
----
 ## Features
 
 ### User Management
