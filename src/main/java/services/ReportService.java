@@ -21,7 +21,6 @@ public class ReportService implements CompletablesReport{
     public double getCompletionPercentage(ProjectCatalog projectCatalog){
         List<TaskCatalog> tasks = projectCatalog.getTasks();
         if (tasks.isEmpty()){
-            System.out.println("No tasks found");
             return 0.0;
         }
         double completed = tasks.stream()
@@ -45,7 +44,7 @@ public class ReportService implements CompletablesReport{
         System.out.println("Completed: " + completed);
         System.out.println("In-Progress: " + inProgress);
         System.out.println("Not yet started: " + notStarted);
-        System.out.println("Percentage of completed tasks: %.2f%%%n" + percent);
+        System.out.printf("Percentage of completed tasks: %.2f%%%n" , percent);
     }
 
     @Override
@@ -56,7 +55,7 @@ public class ReportService implements CompletablesReport{
         }
         System.out.println("User Workload Summary:");
         for (UserCatalog user : users) {
-            double count = tasks.stream().filter(task -> task.getAssignedUserId().equals(user.getId())).count();
+            long count = tasks.stream().filter(task -> task.getAssignedUserId().equals(user.getId())).count();
             System.out.println("User " + user.getName() + " has " + count + " assigned tasks.");
         }
 

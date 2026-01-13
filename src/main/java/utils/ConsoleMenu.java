@@ -22,6 +22,12 @@ public class ConsoleMenu {
     private final TaskService taskService;
     private final ReportService reportService = new ReportService();
 
+    private void saveData() {
+        FileUtils.saveAll(userService.getAllUsers(),
+                projectService.getAllProjects(),
+                taskService.getAllTasks());
+    }
+
     public ConsoleMenu(ProjectService projectService, UserService userService, TaskService taskService) {
         this.projectService = projectService;
         this.userService = userService;
@@ -37,7 +43,8 @@ public class ConsoleMenu {
             System.out.println("2. Project Management");
             System.out.println("3. Task Management");
             System.out.println("4. Reports");
-            System.out.println("5. Exit System");
+            System.out.println("5. Simulate Concurrent Task Updates");
+            System.out.println("6. Exit System");
             System.out.println("\n Enter choice: ");
 
             choice = scanner.nextInt();
@@ -62,6 +69,10 @@ public class ConsoleMenu {
                         ReportsMenu();
                         break;
                     case 5:
+                        System.out.println("Concurrency Simulation");
+                        ConcurrencyMenu();
+                        break;
+                    case 6:
                         System.out.println("Exiting...");
                         return;
                     default:
@@ -70,6 +81,28 @@ public class ConsoleMenu {
 
             }
         }
+    }
+    public void ConcurrencyMenu() {
+        System.out.println("*****************************");
+        System.out.println("* CONCURRENCY DEMONSTRATION *");
+        System.out.println("*****************************");
+        System.out.println("Enter number of threads:");
+        int threads = scanner.nextInt();
+        System.out.println("Enter updates per thread:");
+        int updates = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("\nStarting concurrent task updates...");
+        System.out.println("Threads: " + threads + " | Updates per thread: " + updates);
+        System.out.println("-".repeat(50));
+
+        TaskUpdateSimulator.simulateConcurrentUpdates(taskService, threads, updates);
+
+        System.out.println("-".repeat(50));
+        System.out.println("Simulation complete. Saving data...");
+        saveData();
+        System.out.println("Press Enter to return to main menu...");
+        scanner.nextLine();
     }
 
     public void UserMenu(){
@@ -99,13 +132,14 @@ public class ConsoleMenu {
                         System.out.println(" User creation ");
                         try {
                             userService.createUser();
+                            saveData();
                         }catch (InvalidInputException e){
                             System.out.println(e.getMessage());
                         }
                         break;
                     case 2:
                         System.out.println("Users display");
-                        userService.getAllUsers();
+                        userService.displayAllUsers();
                         break;
                     case 3:
                         System.out.println("User display");
@@ -124,7 +158,8 @@ public class ConsoleMenu {
                     case 5:
                         System.out.println("update");
                         try {
-                            userService.updateUser();
+                            userService.updateUser(projectService, taskService);
+                            saveData();
                         } catch (Exception e) {
                             System.out.println(e.getMessage());
                         }
@@ -132,6 +167,7 @@ public class ConsoleMenu {
                     case 6:
                         System.out.println("Delete");
                         userService.deleteUser();
+                        saveData();
                         break;
                     case 7:
                         System.out.println("Search");
@@ -139,7 +175,7 @@ public class ConsoleMenu {
                         break;
                     case 8:
                         System.out.println("Returning to main menu");
-                        MainMenu();
+                        return;
                     case 9:
                         System.out.println("Exiting...");
                         System.exit(0);
@@ -179,8 +215,7 @@ public class ConsoleMenu {
                         break;
                     case 4:
                         System.out.println("Exiting update menu...");
-                        MainMenu();
-                        break;
+                        return;
                     case 5:
                         System.out.println("Exiting...");
                         System.exit(0);
@@ -200,8 +235,8 @@ public class ConsoleMenu {
             System.out.println("1. Create new project");
             System.out.println("2. Display projects");
             System.out.println("3. Update project Details");
-            System.out.println("4. Filter Projects");
-            System.out.println("5. Delete Project");
+            System.out.println("4. Delete Project");
+            System.out.println("5. Search Project");
             System.out.println("6. Return To Main Menu");
             System.out.println("7. Exit system");
             System.out.println("\n Enter choice: ");
@@ -214,6 +249,7 @@ public class ConsoleMenu {
                     case 1:
                         System.out.println(" project creation ");
                         projectService.createProject();
+                        saveData();
                         break;
                     case 2:
                         System.out.println("project list display");
@@ -226,7 +262,8 @@ public class ConsoleMenu {
                         break;
                     case 3:
                         System.out.println("update");
-                        projectService.updateProjectMenu();
+                        projectService.updateProjectMenu(userService,taskService);
+                        saveData();
                         break;
                     case 4:
                         System.out.println("Delete");
@@ -240,8 +277,7 @@ public class ConsoleMenu {
                         break;
                     case 6:
                         System.out.println("Return");
-                        MainMenu();
-                        break;
+                        return;
                     case 7:
                         System.out.println("Exiting...");
                         System.exit(0);
@@ -282,8 +318,7 @@ public class ConsoleMenu {
 
                     case 4:
                         System.out.println("Exiting update menu...");
-                        MainMenu();
-                        break;
+                        return;
                     case 5:
                         System.out.println("Exiting...");
                         System.exit(0);
@@ -317,6 +352,7 @@ public class ConsoleMenu {
                     case 1:
                         System.out.println(" Task creation ");
                         taskService.createTaskMenu(projectService, userService);
+                        saveData();
                         break;
                     case 2:
                         System.out.println("Task list display");
@@ -325,7 +361,8 @@ public class ConsoleMenu {
                     case 3:
                         System.out.println("Task update ");
                         try {
-                            taskService.updateTaskMenu();
+                            taskService.updateTaskMenu(projectService, userService);
+                            saveData();
                         } catch (TaskNotFoundException e) {
                             System.out.println(e.getMessage());
                         }
@@ -333,14 +370,14 @@ public class ConsoleMenu {
                     case 4:
                         try {
                             taskService.deleteTask();
+                            saveData();
                         } catch (TaskNotFoundException e) {
                             System.out.println(e.getMessage());
                         }
                         break;
                     case 5:
                         System.out.println("Return ");
-                        MainMenu();
-                        break;
+                        return;
                     case 6:
                         System.out.println("Exiting...");
                         System.exit(0);
@@ -383,20 +420,19 @@ public class ConsoleMenu {
 
                     case 4:
                         try {
-                            taskService.updateAssignedUser(task);
+                            taskService.updateAssignedUser(task, userService);
                         }catch (InvalidInputException e){
                             System.out.println(e.getMessage());
                         }
                         break;
 
                     case 5:
-                        taskService.updateProject(task);
+                        taskService.updateProject(task, projectService);
                         break;
 
                     case 6:
                         System.out.println("Exiting update menu...");
-                        MainMenu();
-                        break;
+                        return;
                     case 7:
                         System.out.println("Exiting...");
                         System.exit(0);
@@ -445,10 +481,10 @@ public class ConsoleMenu {
                         break;
                     case 4:
                         System.out.println("Returning");
-                        MainMenu();
-                        break;
+                        return;
                     case 5:
                         System.out.println("Exiting...");
+                        saveData();
                         System.exit(0);
                         break;
                     default:

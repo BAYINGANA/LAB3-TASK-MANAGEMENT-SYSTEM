@@ -1,5 +1,6 @@
 package services;
 
+import utils.ConsoleMenu;
 import utils.RegexValidator;
 import utils.exceptions.EmptyProjectException;
 import utils.exceptions.InvalidInputException;
@@ -19,8 +20,22 @@ public class TaskService {
     public TaskService(List<TaskCatalog> loadedTasks) {
         tasks.clear();
         if (loadedTasks != null) loadedTasks.forEach(t -> tasks.put(t.getTaskId(), t));
+        initializeTaskrCounter(loadedTasks);
     }
     public TaskService() { this(new ArrayList<>()); }
+
+    private static void initializeTaskrCounter(List<TaskCatalog> loadedTasks) {
+        int max = 0;
+
+        for (TaskCatalog task : loadedTasks) {
+            String id = task.getTaskId(); // e.g. UR012
+            int num = Integer.parseInt(id.substring(2));
+            if (num > max) {
+                max = num;
+            }
+        }
+        taskCounter = max;
+    }
 
     //Generate ID
     private static String generateTaskId() {
@@ -83,13 +98,22 @@ public class TaskService {
         }
 
         System.out.println("Available users:");
-        userService.getAllUsers();
+        userService.displayAllUsers();
 
         System.out.println("Enter user ID to assign this task (or 0 for unassigned):");
         String assignedUserId = scanner.nextLine();
 
         TaskCatalog task = new TaskCatalog(taskId, name, desc, project.getProjectID());
-        if (ValidationUtils.isNotEmpty(assignedUserId)) {
+        if (!assignedUserId.equals("0")) {
+            boolean userExists = userService.getAllUsers()
+                    .stream()
+                    .anyMatch(u -> u.getId().equals(assignedUserId));
+
+            if (!userExists) {
+                System.out.println("User does not exist. Task not created.");
+                return;
+            }
+
             task.setAssignedUserId(assignedUserId);
         }
         tasks.put(taskId, task);
@@ -127,7 +151,7 @@ public class TaskService {
 
     /*==========================UPDATE TASK==================*/
 
-    public void updateTaskMenu() throws TaskNotFoundException {
+    public void updateTaskMenu(ProjectService projectService, UserService userService) throws TaskNotFoundException {
         System.out.println("Available Tasks:");
         System.out.println("================");
         displayTasks();
@@ -141,10 +165,8 @@ public class TaskService {
             if (task == null) {
                 throw new TaskNotFoundException("Task not found.");
             }
-            // You must pass all services to ConsoleMenu now. Example below assumes you have access to them:
-            // ConsoleMenu console = new ConsoleMenu(projectService, userService, this);
-            // For now, just print a message to avoid compile error:
-            System.out.println("Task update options would be shown here (ConsoleMenu requires all services).");
+            ConsoleMenu console = new ConsoleMenu(projectService, userService, this);
+            console.showUpdateOptions(task);
             System.out.println("Task updated.");
         }
     }
@@ -178,23 +200,28 @@ public class TaskService {
         }
     }
 
-    public void updateAssignedUser (TaskCatalog task) throws InvalidInputException {
+    public void updateAssignedUser (TaskCatalog task, UserService userService) throws InvalidInputException {
         System.out.println("Available users:");
-        UserService userService = new UserService();
-        userService.getAllUsers();
+        userService.displayAllUsers();
         System.out.println("Enter new assigned user ID (0 for unassigned):");
 
-        String userId = scanner.nextLine();
-        if (ValidationUtils.isNotEmpty(userId)) {
-            task.setAssignedUserId(userId);
-        } else {
-            task.setAssignedUserId("0");  // unassigned
+        String assignedUserId = scanner.nextLine();
+        if (!assignedUserId.equals("0")) {
+            boolean userExists = userService.getAllUsers()
+                    .stream()
+                    .anyMatch(u -> u.getId().equals(assignedUserId));
+
+            if (!userExists) {
+                System.out.println("User does not exist. Task not updated.");
+                return;
+            }
+
+            task.setAssignedUserId(assignedUserId);
         }
         System.out.println("Assigned user updated.");
     }
 
-    public void updateProject(TaskCatalog task) {
-        ProjectService projectService = new ProjectService();
+    public void updateProject(TaskCatalog task, ProjectService projectService) {
         System.out.println("Available projects:");
         try {
             projectService.displayProjects();
@@ -215,5 +242,22 @@ public class TaskService {
         } catch (NumberFormatException e) {
             System.out.println("Invalid number.");
         }
+    }
+
+    public void linkTasksToProjects(ProjectService projectService) {
+        List<ProjectCatalog> allProjects = projectService.getAllProjects();
+
+        for (TaskCatalog task : tasks.values()) {
+            String projectId = task.getProjectID();
+            ProjectCatalog project = allProjects.stream()
+                    .filter(p -> p.getProjectID().equals(projectId))
+                    .findFirst()
+                    .orElse(null);
+
+            if (project != null) {
+                project.addTask(task);
+            }
+        }
+        System.out.println("[INFO] Linked " + tasks.size() + " tasks to their projects");
     }
 }
